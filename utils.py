@@ -15,6 +15,7 @@ def run_query(user:str, password:str, host:str, db:str, query:str)->pd.DataFrame
     df = pd.read_sql_query(query, conn)
     conn.close()
     return df
+
 def get_questions(user:str, password:str, host:str, db:str)->list:
     conn = psycopg2.connect(
         host=host,
@@ -23,7 +24,7 @@ def get_questions(user:str, password:str, host:str, db:str)->list:
         password=password)
     cur = conn.cursor()
     cur.execute("""
-        select question, sql_query from sample_questions
+        select question, query from ingres_sample_questions
     """)
     rows = cur.fetchall()
     cur.close()
@@ -41,7 +42,7 @@ def get_schema(user:str, password:str, host:str, db:str)->list:
         password=password)
     cur = conn.cursor()
     cur.execute("""
-        select table_name, column_name, data_type, alt from argo_table_schema
+        select table_name, column_name, datatype, alts  from ingres_schema
     """)
     rows = cur.fetchall()
     cur.close()

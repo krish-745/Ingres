@@ -9,7 +9,7 @@ class VectorDB:
 
     def read_questions(self):
         try:
-            questions= get_questions("postgres","adit1290","localhost", "argo_db")
+            questions= get_questions("postgres","adit1290","localhost", "ingres")
             for question_data in questions:
                 print(question_data)
                 self.add_vector(data=question_data,collection_name="questions")
@@ -21,7 +21,7 @@ class VectorDB:
 
     def read_schema(self):
         try:
-            schema= get_schema("postgres","adit1290","localhost", "argo_db")
+            schema= get_schema("postgres","adit1290","localhost", "ingres")
             for column_data in schema:
                 print(column_data)
                 self.add_vector(data=column_data,collection_name="schema")
