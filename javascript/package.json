@@ -10,8 +10,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@chroma-core/default-embed": "^0.1.8",
     "@google/generative-ai": "^0.24.1",
+    "chroma": "^0.0.1",
+    "chromadb": "^3.0.17",
     "lucide-react": "^0.545.0",
+    "pg": "^8.16.3",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "uuid": "^13.0.0"

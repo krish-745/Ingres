@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, Bot, User } from 'lucide-react';
 import './Chatbot.css';
+import  {cb} from "./base.js";
 
 export default function Chatbot() {
+  //const chatbot = new cb();
   const [messages, setMessages] = useState([
     {
       id: 1,
@@ -61,12 +63,13 @@ export default function Chatbot() {
     setIsLoading(true);
 
     try {
-      const response = await sendMessageToBackend(input);
+
+      //const response = await chatbot.answer(input);
       const botMessage = {
         id: Date.now() + 1,
         type: 'bot',
-        content: response.content,
-        text: response.text,
+        content: 'https://via.placeholder.com/700x400/6366F1/FFFFFF?text=Data+Visualization',
+        text: 'response',
         contentType: response.type || 'text',
         timestamp: new Date()
       };
