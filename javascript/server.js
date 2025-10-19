@@ -17,7 +17,7 @@ const conn = {
         user: 'postgres',
         host: 'localhost',
         database: 'ingres',
-        password: 'adit1290',
+        password: 'crash',
         port: 5432,
     };
 const pool = new Pool(conn);

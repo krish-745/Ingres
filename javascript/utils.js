@@ -27,7 +27,7 @@ async function get_questions()
         user: 'postgres',
         host: 'localhost',
         database: 'ingres',
-        password: 'adit1290',
+        password: 'crash',
         port: 5432,
     };
     const pool = new Pool(conn);
@@ -41,7 +41,7 @@ async function get_scehama()
         user: 'postgres',
         host: 'localhost',
         database: 'ingres',
-        password: 'adit1290',
+        password: 'crash',
         port: 5432,
     };
     const pool = new Pool(conn);

@@ -4,7 +4,6 @@ import ChartComponent from './ChartComponent';
 import './Chatbot.css';
 
 export default function Chatbot() {
-  //const chatbot = new cb();
   const [messages, setMessages] = useState([
     {
       id: 1,
@@ -15,7 +14,6 @@ export default function Chatbot() {
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [chartData, setChartData] = useState(null);
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -26,32 +24,9 @@ export default function Chatbot() {
     scrollToBottom();
   }, [messages]);
 
-  const sendMessageToBackend = async (userMessage) => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        if (
-          userMessage.toLowerCase().includes('chart') ||
-          userMessage.toLowerCase().includes('graph') ||
-          userMessage.toLowerCase().includes('visualization')
-        ) {
-          resolve({
-            type: 'image',
-            content: 'https://via.placeholder.com/700x400/6366F1/FFFFFF?text=Data+Visualization',
-            text: "Here's the data visualization you requested 📊:"
-          });
-        } else {
-          resolve({
-            type: 'text',
-            content: `You said: "${userMessage}". This is a mock response. Connect your backend API to get real responses!`
-          });
-        }
-      }, 1000);
-    });
-  };
-
   const handleSend = async () => {
     if (!input.trim()) return;
-    setChartData(null);
+
     const userMessage = {
       id: Date.now(),
       type: 'user',
@@ -65,32 +40,34 @@ export default function Chatbot() {
     setIsLoading(true);
 
     try {
-
       const apiResponse = await fetch('http://localhost:3001/api/chat', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ question: currentInput }),
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question: currentInput }),
       });
       const data = await apiResponse.json();
-      console.log('Frontend received this data:', data);
-      const botMessage = {
-                id: Date.now() + 1,
-                type: 'bot',
-                content: data.title || "Here's what I found:",
-                timestamp: new Date(),
-      };
-      setMessages(prev => [...prev, botMessage]);
-      setChartData(data);
-    } catch {
+
+      console.log('Frontend received:', data);
+
+      // If backend returns a chart object
+      if (data) {
+        const chartMessage = {
+          id: Date.now() + 1,
+          type: 'bot',
+          contentType: 'chart',
+          content: data, // send the entire data object to ChartComponent
+          timestamp: new Date(),
+        };
+        setMessages(prev => [...prev, chartMessage]);
+      }
+
+    } catch (err) {
       setMessages(prev => [
         ...prev,
         {
-          id: Date.now() + 1,
+          id: Date.now() + 2,
           type: 'bot',
           content: '⚠️ Sorry, I encountered an error. Please try again later.',
-          contentType: 'text',
           timestamp: new Date()
         }
       ]);
@@ -130,7 +107,9 @@ export default function Chatbot() {
               {msg.type === 'bot' && <div className="avatar bot-avatar"><Bot size={20} /></div>}
 
               <div className={`message-bubble ${msg.type === 'user' ? 'user-bubble' : 'bot-bubble'}`}>
-                {msg.contentType === 'image' ? (
+                {msg.contentType === 'chart' ? (
+                  <ChartComponent chartInfo={msg.content} />
+                ) : msg.contentType === 'image' ? (
                   <div className="image-message">
                     {msg.text && <p className="image-text">{msg.text}</p>}
                     <img src={msg.content} alt="Visualization" />
@@ -144,15 +123,6 @@ export default function Chatbot() {
               {msg.type === 'user' && <div className="avatar user-avatar"><User size={20} /></div>}
             </div>
           ))}
-
-          {chartData && (
-                        <div className="message-row bot-row">
-                             <div className="avatar bot-avatar"><Bot size={20} /></div>
-                             <div className="message-bubble bot-bubble chart-bubble">
-                                <ChartComponent chartInfo={chartData} />
-                             </div>
-                        </div>
-          )}
 
           {isLoading && (
             <div className="message-row bot-row">
