@@ -127,8 +127,8 @@ export default function Chatbot() {
             <Bot size={30} />
           </div>
           <div>
-            <h1>AI Assistant</h1>
-            <p>Your personal data companion</p>
+            <h1>INGRES Chatbot</h1>
+            {/* <p>Your personal data companion</p> */}
           </div>
           {detectedLanguage !== 'EN' && (
             <div className="language-indicator">

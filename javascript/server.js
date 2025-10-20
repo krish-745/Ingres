@@ -3,7 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import pg from 'pg';
 import { cb as Chatbot } from './base.js';
-import { detectLanguage, translateText, translateChartData } from './translationService.js';
+import { detectLanguage, translateText } from './translationService.js';
 
 dotenv.config();
 
@@ -44,30 +44,55 @@ app.post('/api/chat', async (req, res) => {
             console.log('Translated to English:', questionInEnglish);
         }
 
-        // Step 3: Process the English question through the chatbot
-        const plan = await chatbot.answer(questionInEnglish);
+        // Step 3: Add language instruction to the question for the chatbot
+        let enhancedQuestion = questionInEnglish;
+        if (detectedLang !== 'EN') {
+            const languageNames = {
+                'HI': 'Hindi',
+                'ES': 'Spanish',
+                'FR': 'French',
+                'DE': 'German',
+                'ZH': 'Chinese',
+                'JA': 'Japanese',
+                'AR': 'Arabic',
+                'PT': 'Portuguese',
+                'RU': 'Russian',
+                'IT': 'Italian'
+            };
+            const langName = languageNames[detectedLang] || detectedLang;
+            enhancedQuestion = `${questionInEnglish} (Please provide the title and labels in ${langName})`;
+        }
+
+        // Step 4: Process the question through the chatbot
+        const plan = await chatbot.answer(enhancedQuestion);
         console.log('Executing SQL:', plan.sql_query);
         
-        // Step 4: Execute the SQL query
+        // Step 5: Execute the SQL query
         const result = await pool.query(plan.sql_query);
         const data = result.rows;
 
-        // Step 5: Prepare chart data in English
-        let chartData = {
-            chartType: plan.chart_type,
-            title: plan.title_suggestion,
-            data: data,
-        };
+        // Step 6: Translate column headers in the data if needed
+        let translatedData = data;
+        if (detectedLang !== 'EN' && data.length > 0) {
+            const keys = Object.keys(data[0]);
+            const translatedKeys = await Promise.all(
+                keys.map(key => translateText(key, detectedLang, 'EN'))
+            );
 
-        // Step 6: Translate chart data back to user's language
-        if (detectedLang !== 'EN') {
-            chartData = await translateChartData(chartData, detectedLang);
-            console.log('Translated chart back to:', detectedLang);
+            translatedData = data.map(row => {
+                const newRow = {};
+                keys.forEach((oldKey, index) => {
+                    newRow[translatedKeys[index]] = row[oldKey];
+                });
+                return newRow;
+            });
         }
 
-        // Step 7: Include detected language in response for frontend
+        // Step 7: Return chart data with translated title (from chatbot) and data
         res.json({
-            ...chartData,
+            chartType: plan.chart_type,
+            title: plan.title_suggestion, // This should already be in target language if chatbot followed instructions
+            data: translatedData,
             userLanguage: detectedLang
         });
 
