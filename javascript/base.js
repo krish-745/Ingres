@@ -1,5 +1,8 @@
 import {VectorDB} from './vectordb.js';
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 class cb
 {
@@ -122,7 +125,7 @@ Generate the complete JSON response for the following question: ${question}`;
         const related_schema = await this.vectordb.query(question, "schema", 10);
         const related_questions = await this.vectordb.query(question, "questions", 10);
         const prompt = this.get_prompt(question, related_schema, related_questions);
-        const client = new GoogleGenerativeAI("AIzaSyAlsL-bFLcLk87bVrdwSBIk3G4aCtawdlo");
+        const client = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
         const model = client.getGenerativeModel({
             model: "gemini-2.0-flash",
             generationConfig: {

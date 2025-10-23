@@ -1,5 +1,5 @@
-import { ChromaClient } from "chromadb";
-import { get_questions,generateId,generateEmbeddings,get_scehama } from './utils.js';
+import { CloudClient } from "chromadb";
+import { get_questions, generateId, generateEmbeddings, get_scehama } from './utils.js';
 
 const myNomicEmbeddingFunction = {
     generate: async function (texts) {
@@ -11,7 +11,12 @@ class VectorDB
 {
     constructor()
     {
-        this.db = new ChromaClient();
+        // Use CloudClient instead of ChromaClient
+        this.db = new CloudClient({
+            apiKey: process.env.CHROMA_API_KEY || 'ck-6AdCzCuqWqgxwjdibhzTVsDApmW75HSkrutbBsWZUauf',
+            tenant: process.env.CHROMA_TENANT || 'c12751e7-ffec-4c6e-943a-c4a9c9977d8a',
+            database: process.env.CHROMA_DATABASE || 'ingres'
+        });
     }
 
     async read_questions()
@@ -34,7 +39,7 @@ class VectorDB
         }
     }
 
-    async add_vector(data,collection_name)
+    async add_vector(data, collection_name)
     {
         const collection = await this.db.getOrCreateCollection({
             name: collection_name,
@@ -49,26 +54,29 @@ class VectorDB
     async query(data, collection_name, n_results)
     {
         const embeddings = generateEmbeddings(data);
-        const collection = await this.db.getCollection({ name: collection_name,embeddingFunction: myNomicEmbeddingFunction });
+        const collection = await this.db.getCollection({ 
+            name: collection_name,
+            embeddingFunction: myNomicEmbeddingFunction 
+        });
         const results = await collection.query({
-                queryTexts: [data],
-                nResults: n_results,
+            queryTexts: [data],
+            nResults: n_results,
         });
         const documents = this.return_documents(results);
         return documents;
     }
 
     return_documents(results) {
-    if (!results || !results.documents) {
-        return [];
-    }
+        if (!results || !results.documents) {
+            return [];
+        }
 
-    let documents = results.documents;
-    if (documents.length === 1 && Array.isArray(documents[0])) {
-        return documents[0];
+        let documents = results.documents;
+        if (documents.length === 1 && Array.isArray(documents[0])) {
+            return documents[0];
+        }
+        return documents;
     }
-    return documents;
-}
 
     async clear_collection(collection_name)
     {

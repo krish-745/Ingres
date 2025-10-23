@@ -73,7 +73,7 @@ async function generateEmbeddings(texts) { // This function receives an array of
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer nk-PuRVLR5fvvNzVTeIYcfhKCKaPlYq1U4Msfbxrb2DLAg'
+                'Authorization': `Bearer ${process.env.NOMIC_API_KEY}`
             },
             body: JSON.stringify(payload)
         });
