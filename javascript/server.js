@@ -1,11 +1,14 @@
+// server.js
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import pg from 'pg';
+import pkg from 'pg';
 import { cb as Chatbot } from './base.js';
 import { detectLanguage, translateText } from './translationService.js';
 
 dotenv.config();
+
+const { Pool } = pkg;
 
 const app = express();
 const port = 3001;
@@ -15,15 +18,25 @@ app.use(express.json());
 
 const chatbot = new Chatbot();
 
-const { Pool } = pg;
-const conn = {
-    user: 'postgres',
-    host: 'localhost',
-    database: 'ingres',
-    password: 'crash',
-    port: 5432,
-};
-const pool = new Pool(conn);
+// PostgreSQL connection (Supabase)
+const pool = new Pool({
+    user: process.env.DB_USER,
+    host: process.env.DB_HOST,
+    database: process.env.DB_DATABASE,
+    password: process.env.DB_PASSWORD,
+    port: process.env.DB_PORT,
+    ssl: { rejectUnauthorized: false },
+});
+
+// Test endpoint to verify DB connection
+app.get('/api/test-db', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT NOW()');
+        res.json({ success: true, time: result.rows[0] });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
 
 app.post('/api/chat', async (req, res) => {
     const { question } = req.body;
@@ -91,7 +104,7 @@ app.post('/api/chat', async (req, res) => {
         // Step 7: Return chart data with translated title (from chatbot) and data
         res.json({
             chartType: plan.chart_type,
-            title: plan.title_suggestion, // This should already be in target language if chatbot followed instructions
+            title: plan.title_suggestion,
             data: translatedData,
             userLanguage: detectedLang
         });
@@ -99,7 +112,6 @@ app.post('/api/chat', async (req, res) => {
     } catch (error) {
         console.error('Error processing chat request:', error);
         
-        // Try to translate error message if we know the user's language
         let errorMessage = 'Failed to get a response from the AI.';
         try {
             const detectedLang = await detectLanguage(question);

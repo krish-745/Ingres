@@ -1,6 +1,20 @@
 import { Pool, Client } from "pg";
 import crypto from 'crypto';
 import { v5 as uuidv5 } from 'uuid';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+// Updated connection to use Supabase instead of local Postgres
+const conn = {
+    user: process.env.DB_USER,
+    host: process.env.DB_HOST,
+    database: process.env.DB_DATABASE,
+    password: process.env.DB_PASSWORD,
+    port: process.env.DB_PORT,
+    ssl: { rejectUnauthorized: false },
+};
+const pool = new Pool(conn);
 
 async function run_query(pool, query)
 {
@@ -23,28 +37,12 @@ async function run_query(pool, query)
 
 async function get_questions()
 {
-    const conn = {
-        user: 'postgres',
-        host: 'localhost',
-        database: 'ingres',
-        password: 'crash',
-        port: 5432,
-    };
-    const pool = new Pool(conn);
     const questions = await run_query(pool, 'select question, query from ingres_sample_questions;');
     return questions;
 }
 
 async function get_scehama()
 {
-    const conn = {
-        user: 'postgres',
-        host: 'localhost',
-        database: 'ingres',
-        password: 'crash',
-        port: 5432,
-    };
-    const pool = new Pool(conn);
     const rows = await run_query(pool, 'select table_name, column_name, datatype, alts  from ingres_schema;');
     let schema = [];
     for (let i = 0; i < rows.length; i++)
