@@ -28,7 +28,6 @@ export default function Chatbot() {
   const getLanguageName = (code) => {
     const languages = {
       'EN': 'English',
-      'HI': 'हिन्दी (Hindi)',
       'ES': 'Español (Spanish)',
       'FR': 'Français (French)',
       'DE': 'Deutsch (German)',
@@ -150,7 +149,9 @@ export default function Chatbot() {
 
               <div className={`message-bubble ${msg.type === 'user' ? 'user-bubble' : 'bot-bubble'}`}>
                 {msg.contentType === 'chart' ? (
-                  <ChartComponent chartInfo={msg.content} />
+                  <div style={{ width: '100%', height: '100%' }}>
+                    <ChartComponent chartInfo={msg.content} />
+                  </div>
                 ) : msg.contentType === 'image' ? (
                   <div className="image-message">
                     {msg.text && <p className="image-text">{msg.text}</p>}
