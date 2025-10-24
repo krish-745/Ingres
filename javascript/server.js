@@ -52,7 +52,7 @@ app.get('/api/test-db', async (req, res) => {
 
 // ✅ Main Chat Endpoint (No changes here except formatting)
 app.post('/api/chat', async (req, res) => {
-    const { question } = req.body;
+    const { question, history = [] } = req.body;
 
     if (!question) return res.status(400).json({ error: 'Question is required.' });
 
@@ -70,7 +70,7 @@ app.post('/api/chat', async (req, res) => {
             enhancedQuestion = `${questionInEnglish} (Please provide the title and labels in ${detectedLang})`;
         }
 
-        const plan = await chatbot.answer(enhancedQuestion);
+        const plan = await chatbot.answer(enhancedQuestion, history);
         const result = await pool.query(plan.sql_query);
         let data = result.rows;
 

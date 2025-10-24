@@ -58,10 +58,26 @@ export default function Chatbot() {
     setIsLoading(true);
 
     try {
+      const chatHistory = messages.map(msg => {
+        let messageContent = msg.content;
+        if (msg.type === 'bot' && msg.contentType === 'chart') {
+          messageContent = msg.content?.title 
+            ? `Generated a chart: ${msg.content.title}`
+            : "Generated a chart visualization.";
+        }
+        return  { 
+          role: msg.type,
+          content: messageContent 
+        };
+    });
+
       const apiResponse = await fetch('http://localhost:3001/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ question: currentInput }),
+        body: JSON.stringify({
+          question: currentInput,
+          history: chatHistory
+        }),
       });
       const data = await apiResponse.json();
 
