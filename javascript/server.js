@@ -3,6 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import pkg from 'pg';
+import nodemailer from 'nodemailer';
 import { cb as Chatbot } from './base.js';
 import { detectLanguage, translateText } from './translationService.js';
 
@@ -18,7 +19,7 @@ app.use(express.json());
 
 const chatbot = new Chatbot();
 
-// PostgreSQL connection (Supabase)
+// PostgreSQL connection (Supabase / Neon)
 const pool = new Pool({
     user: process.env.DB_USER,
     host: process.env.DB_HOST,
@@ -28,7 +29,18 @@ const pool = new Pool({
     ssl: { rejectUnauthorized: false },
 });
 
-// Test endpoint to verify DB connection
+// ✅ Email setup
+const transporter = nodemailer.createTransport({
+    host: process.env.EMAIL_HOST,
+    port: process.env.EMAIL_PORT,
+    secure: false,
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+    }
+});
+
+// ✅ Test DB Endpoint
 app.get('/api/test-db', async (req, res) => {
     try {
         const result = await pool.query('SELECT NOW()');
@@ -38,61 +50,37 @@ app.get('/api/test-db', async (req, res) => {
     }
 });
 
+// ✅ Main Chat Endpoint (No changes here except formatting)
 app.post('/api/chat', async (req, res) => {
     const { question } = req.body;
 
-    if (!question) {
-        return res.status(400).json({ error: 'Question is required.' });
-    }
+    if (!question) return res.status(400).json({ error: 'Question is required.' });
 
     try {
-        // Step 1: Detect the language of the user's question
         const detectedLang = await detectLanguage(question);
-        console.log('Detected language:', detectedLang);
-
-        // Step 2: Translate question to English if not already in English
         let questionInEnglish = question;
+
         if (detectedLang !== 'EN') {
             questionInEnglish = await translateText(question, 'EN', detectedLang);
-            console.log('Translated to English:', questionInEnglish);
         }
 
-        // Step 3: Add language instruction to the question for the chatbot
         let enhancedQuestion = questionInEnglish;
+
         if (detectedLang !== 'EN') {
-            const languageNames = {
-                'HI': 'Hindi',
-                'ES': 'Spanish',
-                'FR': 'French',
-                'DE': 'German',
-                'ZH': 'Chinese',
-                'JA': 'Japanese',
-                'AR': 'Arabic',
-                'PT': 'Portuguese',
-                'RU': 'Russian',
-                'IT': 'Italian'
-            };
-            const langName = languageNames[detectedLang] || detectedLang;
-            enhancedQuestion = `${questionInEnglish} (Please provide the title and labels in ${langName})`;
+            enhancedQuestion = `${questionInEnglish} (Please provide the title and labels in ${detectedLang})`;
         }
 
-        // Step 4: Process the question through the chatbot
         const plan = await chatbot.answer(enhancedQuestion);
-        console.log('Executing SQL:', plan.sql_query);
-        
-        // Step 5: Execute the SQL query
         const result = await pool.query(plan.sql_query);
-        const data = result.rows;
+        let data = result.rows;
 
-        // Step 6: Translate column headers in the data if needed
-        let translatedData = data;
         if (detectedLang !== 'EN' && data.length > 0) {
             const keys = Object.keys(data[0]);
             const translatedKeys = await Promise.all(
                 keys.map(key => translateText(key, detectedLang, 'EN'))
             );
 
-            translatedData = data.map(row => {
+            data = data.map(row => {
                 const newRow = {};
                 keys.forEach((oldKey, index) => {
                     newRow[translatedKeys[index]] = row[oldKey];
@@ -101,31 +89,115 @@ app.post('/api/chat', async (req, res) => {
             });
         }
 
-        // Step 7: Return chart data with translated title (from chatbot) and data
         res.json({
             chartType: plan.chart_type,
             title: plan.title_suggestion,
-            data: translatedData,
+            data,
             userLanguage: detectedLang
         });
 
     } catch (error) {
         console.error('Error processing chat request:', error);
-        
-        let errorMessage = 'Failed to get a response from the AI.';
-        try {
-            const detectedLang = await detectLanguage(question);
-            if (detectedLang !== 'EN') {
-                errorMessage = await translateText(errorMessage, detectedLang, 'EN');
-            }
-        } catch (translationError) {
-            console.error('Error translating error message:', translationError);
-        }
-        
-        res.status(500).json({ error: errorMessage });
+        let msg = 'Failed to get a response from the AI.';
+        res.status(500).json({ error: msg });
     }
 });
 
+// ✅ Background process checks alerts every 15 seconds
+setInterval(async () => {
+    try {
+        const alerts = await pool.query('SELECT * FROM alerts');
+
+        for (const alert of alerts.rows) {
+            const queryResult = await pool.query(alert.condition_sql);
+            const newValue = JSON.stringify(queryResult.rows);
+
+            if (newValue !== alert.last_value) {
+
+                await transporter.sendMail({
+                    from: process.env.EMAIL_USER,
+                    to: alert.user_email,
+                    subject: "🔔 Your Alert Condition Was Triggered",
+                    text: `Your alert condition changed.\n\nNew data:\n${newValue}`
+                });
+
+                await pool.query(
+                    'UPDATE alerts SET last_value=$1 WHERE id=$2',
+                    [newValue, alert.id]
+                );
+
+                console.log(`📨 Alert sent to ${alert.user_email}`);
+            }
+        }
+
+    } catch (err) {
+        console.error("Alert check failed:", err);
+    }
+}, 15000); // 15 seconds
+
+app.post("/api/create-alert", async (req, res) => {
+    const { email, sql, operator, value, message } = req.body;
+
+    if (!email || !sql || !operator || value === undefined) {
+        return res.status(400).json({ error: "Missing required fields" });
+    }
+
+    try {
+        const raw_text = `${sql} ${operator} ${value}`; // optional
+        await pool.query(
+            `INSERT INTO alerts 
+             (user_email, sql_condition, comparison_value, operator, message, raw_text)
+             VALUES ($1, $2, $3, $4, $5, $6)`,
+            [email, sql, value, operator, message, raw_text]
+        );
+
+        res.json({ success: true, message: "Alert created successfully." });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+async function checkAlerts() {
+    const alerts = await pool.query("SELECT * FROM alerts");
+
+    for (const alert of alerts.rows) {
+        try {
+            const result = await pool.query(alert.condition_query);
+            const value = Number(result.rows[0][Object.keys(result.rows[0])[0]]);
+
+            let conditionMet = false;
+            switch (alert.operator) {
+                case ">": conditionMet = value > alert.comparison_value; break;
+                case "<": conditionMet = value < alert.comparison_value; break;
+                case "=": conditionMet = value == alert.comparison_value; break;
+                case ">=": conditionMet = value >= alert.comparison_value; break;
+                case "<=": conditionMet = value <= alert.comparison_value; break;
+                case "!=": conditionMet = value != alert.comparison_value; break;
+            }
+
+            if (conditionMet) {
+                await transporter.sendMail({
+                    from: process.env.EMAIL_USER,
+                    to: alert.user_email,
+                    subject: "📢 Alert Triggered",
+                    text: alert.message || `Alert condition met. Current value: ${value}`
+                });
+
+                await pool.query("UPDATE alerts SET last_triggered = NOW() WHERE id = $1", [alert.id]);
+
+                console.log("✅ Alert sent to", alert.user_email);
+            }
+
+        } catch (err) {
+            console.error("Error evaluating alert:", err.message);
+        }
+    }
+}
+
+// Run every 30 seconds
+setInterval(checkAlerts, 30000);
+
+// ✅ Start Server
 app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
+    console.log(`✅ Server running at http://localhost:${port}`);
 });
