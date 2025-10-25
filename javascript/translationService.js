@@ -1,5 +1,6 @@
 // translationService.js
 import dotenv from 'dotenv';
+import logger from './logger.js';
 dotenv.config();
 
 const DEEPL_API_KEY = process.env.DEEPL_API_KEY;
@@ -27,7 +28,7 @@ export async function detectLanguage(text) {
         const data = await response.json();
         return data.translations[0].detected_source_language;
     } catch (error) {
-        console.error('Language detection error:', error);
+        logger.error('Language detection error:', error);
         return 'EN'; // Default to English
     }
 }
@@ -60,13 +61,13 @@ export async function translateText(text, targetLang, sourceLang = null) {
         });
 
         if (!response.ok) {
-            throw new Error(`DeepL API error: ${response.status}`);
+            logger.error(`DeepL API error: ${response.status} ${response.statusText}`);
         }
 
         const data = await response.json();
         return data.translations[0].text;
     } catch (error) {
-        console.error('Translation error:', error);
+        logger.error('Translation error:', error);
         return text; // Return original text if translation fails
     }
 }

@@ -1,5 +1,6 @@
 import {VectorDB} from './vectordb.js';
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import logger from './logger.js';
 
 class cb
 {
@@ -115,7 +116,7 @@ ${relatedQuestionsSection}${schemaSection}
   \`{ "sql_query": null, "chart_type": "error", "title_suggestion": "Insufficient information to generate a query.", "one_line_answer": null, "explanation": null }\`
 
 
-Generate the complete JSON response for the following question:`; // Removed ${question} from here
+Generate the complete JSON response for the following question:`; 
   }
 
     async get_sql(question,history=[])
@@ -123,7 +124,7 @@ Generate the complete JSON response for the following question:`; // Removed ${q
         const related_schema = await this.vectordb.query(question, "schema", 10);
         const related_questions = await this.vectordb.query(question, "questions", 10);
         const prompt = this.get_prompt(related_schema, related_questions);
-        console.log(prompt);
+        logger.info(`Generated prompt for question: ${prompt}`);
         const history_prompt = history.map(msg => ({
             role: msg.role === 'bot' ? 'model' : 'user', 
             parts: [{ text: msg.content }]
@@ -134,7 +135,7 @@ Generate the complete JSON response for the following question:`; // Removed ${q
             { role: "model", parts: [{ text: "Yes, I am ready. I will follow all instructions and generate the JSON response." }] },
             ...history_prompt
         ];
-        const client = new GoogleGenerativeAI("AIzaSyBTWALESvCQd1vqm_sSFhvjl9bIPLQhfxc");
+        const client = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
         const model = client.getGenerativeModel({
             model: "gemini-2.0-flash",
             generationConfig: {

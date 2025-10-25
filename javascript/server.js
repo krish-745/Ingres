@@ -6,6 +6,7 @@ import pkg from 'pg';
 import nodemailer from 'nodemailer';
 import { cb as Chatbot } from './base.js';
 import { detectLanguage, translateText } from './translationService.js';
+import logger from './logger.js';
 
 dotenv.config();
 
@@ -53,13 +54,16 @@ app.get('/api/test-db', async (req, res) => {
 // ✅ Main Chat Endpoint (No changes here except formatting)
 app.post('/api/chat', async (req, res) => {
     const { question, history = [] } = req.body;
-
-    if (!question) return res.status(400).json({ error: 'Question is required.' });
+    if (!question) 
+    {
+        logger.info(`Request from ${req.ip} | Missing question paramater | Ended in 400 Bad Request.`);
+        logger.info(`---------------------------------------------------------------------------------------------`);
+        return res.status(400).json({ error: 'Question is required.' });
+    } 
 
     try {
         const detectedLang = await detectLanguage(question);
         let questionInEnglish = question;
-
         if (detectedLang !== 'EN') {
             questionInEnglish = await translateText(question, 'EN', detectedLang);
         }
@@ -69,8 +73,9 @@ app.post('/api/chat', async (req, res) => {
         if (detectedLang !== 'EN') {
             enhancedQuestion = `${questionInEnglish} (Please provide the title and labels in ${detectedLang})`;
         }
-
+        logger.info(`Request from ${req.ip} | Question: ${question} | Detected Language: ${detectedLang} | Translated Question: ${enhancedQuestion}`);
         const plan = await chatbot.answer(enhancedQuestion, history);
+        logger.info(`Generated Plan: ${JSON.stringify(plan)}`);
         const result = await pool.query(plan.sql_query);
         let data = result.rows;
 
@@ -88,7 +93,8 @@ app.post('/api/chat', async (req, res) => {
                 return newRow;
             });
         }
-
+        logger.info(`Response to ${req.ip} | Successfully processed request | Ended in 200 OK.`);
+        logger.info(`---------------------------------------------------------------------------------------------`);
         res.json({
             chartType: plan.chart_type,
             title: plan.title_suggestion,
@@ -97,7 +103,8 @@ app.post('/api/chat', async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Error processing chat request:', error);
+        logger.error(`Request from ${req.ip} | Error: ${error.message} | Ended in 500 Internal Server Error.`);
+        logger.info(`---------------------------------------------------------------------------------------------`);
         let msg = 'Failed to get a response from the AI.';
         res.status(500).json({ error: msg });
     }
@@ -199,5 +206,5 @@ setInterval(checkAlerts, 30000);
 
 // ✅ Start Server
 app.listen(port, () => {
-    console.log(`✅ Server running at http://localhost:${port}`);
+    logger.info(`✅ Server running at http://localhost:${port}`);
 });

@@ -80,9 +80,6 @@ export default function Chatbot() {
         }),
       });
       const data = await apiResponse.json();
-
-      console.log('Frontend received:', data);
-
       // Update detected language if provided
       if (data.userLanguage) {
         setDetectedLanguage(data.userLanguage);
