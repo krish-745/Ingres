@@ -135,7 +135,7 @@ Generate the complete JSON response for the following question:`;
             { role: "model", parts: [{ text: "Yes, I am ready. I will follow all instructions and generate the JSON response." }] },
             ...history_prompt
         ];
-        const client = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
+        const client = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
         const model = client.getGenerativeModel({
             model: "gemini-2.0-flash",
             generationConfig: {
@@ -164,7 +164,7 @@ Generate the complete JSON response for the following question:`;
         try {
             return JSON.parse(processedText);
         } catch (error) {
-            console.error(`Error decoding JSON: ${error.message}`);
+            logger.error(`Error decoding JSON: ${error.message}`);
             return null;
         }
     }
