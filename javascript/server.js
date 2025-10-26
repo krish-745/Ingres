@@ -19,6 +19,7 @@ app.use(cors());
 app.use(express.json());
 
 const chatbot = new Chatbot();
+await chatbot.initialize();
 
 // PostgreSQL connection (Supabase / Neon)
 const pool = new Pool({
@@ -205,6 +206,6 @@ async function checkAlerts() {
 setInterval(checkAlerts, 30000);
 
 // ✅ Start Server
-app.listen(port, () => {
+app.listen(port, '0.0.0.0', () => {
     logger.info(`✅ Server running at http://localhost:${port}`);
 });

@@ -1,0 +1,121 @@
+i,District,Year,Extraction_mcm,Sector
+Karnataka,Bangalore Urban,2019,455.68,Agriculture
+Karnataka,Bangalore Urban,2019,134.23,Industry
+Karnataka,Bangalore Urban,2019,92.69,Domestic
+Karnataka,Bangalore Urban,2020,501.26,Agriculture
+Karnataka,Bangalore Urban,2020,91.33,Industry
+Karnataka,Bangalore Urban,2020,85.31,Domestic
+Karnataka,Bangalore Urban,2021,467.19,Agriculture
+Karnataka,Bangalore Urban,2021,71.43,Industry
+Karnataka,Bangalore Urban,2021,88.38,Domestic
+Karnataka,Bangalore Urban,2022,323.58,Agriculture
+Karnataka,Bangalore Urban,2022,74.01,Industry
+Karnataka,Bangalore Urban,2022,57.51,Domestic
+Karnataka,Bangalore Urban,2023,272.5,Agriculture
+Karnataka,Bangalore Urban,2023,52.89,Industry
+Karnataka,Bangalore Urban,2023,51.92,Domestic
+Karnataka,Mysore,2019,610.54,Agriculture
+Karnataka,Mysore,2019,135.3,Industry
+Karnataka,Mysore,2019,39.26,Domestic
+Karnataka,Mysore,2020,423.35,Agriculture
+Karnataka,Mysore,2020,87.9,Industry
+Karnataka,Mysore,2020,48.85,Domestic
+Karnataka,Mysore,2021,338.69,Agriculture
+Karnataka,Mysore,2021,53.88,Industry
+Karnataka,Mysore,2021,55.93,Domestic
+Karnataka,Mysore,2022,456.52,Agriculture
+Karnataka,Mysore,2022,67.91,Industry
+Karnataka,Mysore,2022,128.88,Domestic
+Karnataka,Mysore,2023,295.25,Agriculture
+Karnataka,Mysore,2023,63.37,Industry
+Karnataka,Mysore,2023,52.08,Domestic
+Maharashtra,Nagpur,2019,410.65,Agriculture
+Maharashtra,Nagpur,2019,122.77,Industry
+Maharashtra,Nagpur,2019,91.68,Domestic
+Maharashtra,Nagpur,2020,446.95,Agriculture
+Maharashtra,Nagpur,2020,93.03,Industry
+Maharashtra,Nagpur,2020,28.42,Domestic
+Maharashtra,Nagpur,2021,472.35,Agriculture
+Maharashtra,Nagpur,2021,120.44,Industry
+Maharashtra,Nagpur,2021,51.31,Domestic
+Maharashtra,Nagpur,2022,468.36,Agriculture
+Maharashtra,Nagpur,2022,132.55,Industry
+Maharashtra,Nagpur,2022,139.39,Domestic
+Maharashtra,Nagpur,2023,365.91,Agriculture
+Maharashtra,Nagpur,2023,104.01,Industry
+Maharashtra,Nagpur,2023,109.78,Domestic
+Maharashtra,Pune,2019,483.58,Agriculture
+Maharashtra,Pune,2019,135.69,Industry
+Maharashtra,Pune,2019,103.63,Domestic
+Maharashtra,Pune,2020,700.26,Agriculture
+Maharashtra,Pune,2020,96.22,Industry
+Maharashtra,Pune,2020,41.92,Domestic
+Maharashtra,Pune,2021,472.2,Agriculture
+Maharashtra,Pune,2021,130.71,Industry
+Maharashtra,Pune,2021,56.9,Domestic
+Maharashtra,Pune,2022,323.59,Agriculture
+Maharashtra,Pune,2022,83.65,Industry
+Maharashtra,Pune,2022,41.65,Domestic
+Maharashtra,Pune,2023,342.51,Agriculture
+Maharashtra,Pune,2023,63.05,Industry
+Maharashtra,Pune,2023,52.85,Domestic
+Tamil Nadu,Chennai,2019,699.65,Agriculture
+Tamil Nadu,Chennai,2019,125.38,Industry
+Tamil Nadu,Chennai,2019,216.98,Domestic
+Tamil Nadu,Chennai,2020,423.84,Agriculture
+Tamil Nadu,Chennai,2020,74.35,Industry
+Tamil Nadu,Chennai,2020,38.01,Domestic
+Tamil Nadu,Chennai,2021,439.38,Agriculture
+Tamil Nadu,Chennai,2021,90.09,Industry
+Tamil Nadu,Chennai,2021,74.22,Domestic
+Tamil Nadu,Chennai,2022,572.9,Agriculture
+Tamil Nadu,Chennai,2022,143.59,Industry
+Tamil Nadu,Chennai,2022,53.2,Domestic
+Tamil Nadu,Chennai,2023,484.39,Agriculture
+Tamil Nadu,Chennai,2023,80.67,Industry
+Tamil Nadu,Chennai,2023,29.74,Domestic
+Tamil Nadu,Coimbatore,2019,276.73,Agriculture
+Tamil Nadu,Coimbatore,2019,60.52,Industry
+Tamil Nadu,Coimbatore,2019,17.75,Domestic
+Tamil Nadu,Coimbatore,2020,472.12,Agriculture
+Tamil Nadu,Coimbatore,2020,124.23,Industry
+Tamil Nadu,Coimbatore,2020,38.75,Domestic
+Tamil Nadu,Coimbatore,2021,519.77,Agriculture
+Tamil Nadu,Coimbatore,2021,88.69,Industry
+Tamil Nadu,Coimbatore,2021,191.04,Domestic
+Tamil Nadu,Coimbatore,2022,473.02,Agriculture
+Tamil Nadu,Coimbatore,2022,83.68,Industry
+Tamil Nadu,Coimbatore,2022,29.3,Domestic
+Tamil Nadu,Coimbatore,2023,418.45,Agriculture
+Tamil Nadu,Coimbatore,2023,97.59,Industry
+Tamil Nadu,Coimbatore,2023,27.16,Domestic
+Uttar Pradesh,Kanpur,2019,443.43,Agriculture
+Uttar Pradesh,Kanpur,2019,135.67,Industry
+Uttar Pradesh,Kanpur,2019,141.21,Domestic
+Uttar Pradesh,Kanpur,2020,405.03,Agriculture
+Uttar Pradesh,Kanpur,2020,85.91,Industry
+Uttar Pradesh,Kanpur,2020,77.86,Domestic
+Uttar Pradesh,Kanpur,2021,476.69,Agriculture
+Uttar Pradesh,Kanpur,2021,121.36,Industry
+Uttar Pradesh,Kanpur,2021,31.95,Domestic
+Uttar Pradesh,Kanpur,2022,367.16,Agriculture
+Uttar Pradesh,Kanpur,2022,89.66,Industry
+Uttar Pradesh,Kanpur,2022,150.28,Domestic
+Uttar Pradesh,Kanpur,2023,578.18,Agriculture
+Uttar Pradesh,Kanpur,2023,129.03,Industry
+Uttar Pradesh,Kanpur,2023,41.79,Domestic
+Uttar Pradesh,Lucknow,2019,394.61,Agriculture
+Uttar Pradesh,Lucknow,2019,57.9,Industry
+Uttar Pradesh,Lucknow,2019,57.89,Domestic
+Uttar Pradesh,Lucknow,2020,474.01,Agriculture
+Uttar Pradesh,Lucknow,2020,95.44,Industry
+Uttar Pradesh,Lucknow,2020,132.95,Domestic
+Uttar Pradesh,Lucknow,2021,367.15,Agriculture
+Uttar Pradesh,Lucknow,2021,58.61,Industry
+Uttar Pradesh,Lucknow,2021,32.55,Domestic
+Uttar Pradesh,Lucknow,2022,268.05,Agriculture
+Uttar Pradesh,Lucknow,2022,80.39,Industry
+Uttar Pradesh,Lucknow,2022,62.25,Domestic
+Uttar Pradesh,Lucknow,2023,380.42,Agriculture
+Uttar Pradesh,Lucknow,2023,126.2,Industry
+Uttar Pradesh,Lucknow,2023,125.08,Domestic

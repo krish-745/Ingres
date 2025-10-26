@@ -1,29 +1,53 @@
 import {VectorDB} from './vectordb.js';
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import logger from './logger.js';
+import { get_questions } from './utils.js';
 
 class cb
 {
     constructor()
     {
-        this.vectordb = new VectorDB();
+      this.vectordb = new VectorDB();
     }
+
+    async initialize() {
+    const questionsResult = await get_questions();
+    const map = new Map();
+    if (questionsResult && Array.isArray(questionsResult)) {
+        for (const item of questionsResult) {
+            if (item.question && item.query) {
+                map.set(item.question, item.query);
+            }
+        }
+    } else{
+         logger.error("get_questions() did not return a valid array. Cannot build question map.");
+    }
+    this.question_map = map;
+}
 
     async answer(question,history=[])
     {
-        const json = await this.get_sql(question,history);
+        const full_question = [...history.map(h => h.content), question].join("\n");
+        const json = await this.get_sql(full_question,history);
         const obj = this.extract_json(json);
         return obj;
     }
 
     get_prompt(relatedSchema, relatedQuestions)
   {
-    // History section is removed from here
-    const relatedQuestionsSection = (relatedQuestions && relatedQuestions.length > 0)
+    const question_with_query = relatedQuestions.map(questionString => {
+        const sqlQuery = this.question_map.get(questionString);
+        if (sqlQuery) {
+            return `Question: ${questionString}\nSQL Query: ${sqlQuery}`;
+        }
+        logger.warn(`Question "${questionString}" found in vector DB but not in question_map.`);
+        return null;
+    }).filter(Boolean);
+    const relatedQuestionsSection = (question_with_query && question_with_query.length > 0)
   ? `
 ===Contextual Examples (Use these to guide your SQL logic)====
 
-${relatedQuestions.join('\n')}
+${question_with_query.join('\n\n')}
 `
   : '';
 
@@ -121,8 +145,9 @@ Generate the complete JSON response for the following question:`;
 
     async get_sql(question,history=[])
     {
-        const related_schema = await this.vectordb.query(question, "schema", 10);
-        const related_questions = await this.vectordb.query(question, "questions", 10);
+        const related_schema = await this.vectordb.query(question, "schema", this.vectordb.schema_limit);
+
+        const related_questions = await this.vectordb.query(question, "questions", this.vectordb.questions_limit);
         const prompt = this.get_prompt(related_schema, related_questions);
         logger.info(`Generated prompt for question: ${prompt}`);
         const history_prompt = history.map(msg => ({
@@ -149,7 +174,7 @@ Generate the complete JSON response for the following question:`;
         const response = result.response;
         return response.text();
     }
-
+    
     extract_json(text) {
         let processedText = text.trim();
 

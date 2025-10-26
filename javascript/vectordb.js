@@ -17,6 +17,14 @@ class VectorDB
             tenant: process.env.CHROMA_TENANT || 'c12751e7-ffec-4c6e-943a-c4a9c9977d8a',
             database: process.env.CHROMA_DATABASE || 'ingres'
         });
+        // Assuming each query uses around x tables, the expected number of schema rows needed would just be average schema * x
+        // Model question as knn and k should be sqrt(total questions)
+        var tables = parseFloat(process.env.TABLES);
+        var total_alts = parseFloat(process.env.TOTAL_ALTS);
+        var expected_tables = parseFloat(process.env.EXPECTED_TABLES);
+        var questions = parseFloat(process.env.QUESTIONS);
+        this.schema_limit = Math.floor(total_alts*expected_tables/tables) + 5;
+        this.questions_limit = Math.floor(Math.sqrt(questions))+5;
     }
 
     async read_questions()
@@ -25,7 +33,7 @@ class VectorDB
         for (let i = 0; i < questions.length; i++)
         {
             console.log(questions[i]);
-            await this.add_vector(`Question : ${questions[i]['question']}, Query : ${questions[i]['query']}` ,"questions");
+            await this.add_vector(questions[i]['question'],"questions");
         }
     }
 

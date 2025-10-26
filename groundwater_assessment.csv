@@ -1,0 +1,201 @@
+State,District,Block,Year,Recharge_mcm,Extraction_mcm,Stage_pct,Category
+Maharashtra,Pune,Block_1,2019,199.0,110.7,69.2,Safe
+Maharashtra,Pune,Block_1,2020,82.5,73.1,97.3,Critical
+Maharashtra,Pune,Block_1,2021,269.8,174.5,79.5,Semi-Critical
+Maharashtra,Pune,Block_1,2022,28.3,20.1,85.2,Semi-Critical
+Maharashtra,Pune,Block_1,2023,27.4,21.7,95.6,Critical
+Maharashtra,Pune,Block_2,2019,172.6,131.2,91.2,Critical
+Maharashtra,Pune,Block_2,2020,246.6,210.2,106.4,Over-Exploited
+Maharashtra,Pune,Block_2,2021,215.5,111.7,60.9,Safe
+Maharashtra,Pune,Block_2,2022,288.0,138.3,56.5,Safe
+Maharashtra,Pune,Block_2,2023,47.1,40.3,92.2,Critical
+Maharashtra,Pune,Block_3,2019,246.0,195.8,87.5,Semi-Critical
+Maharashtra,Pune,Block_3,2020,292.5,222.1,88.6,Semi-Critical
+Maharashtra,Pune,Block_3,2021,252.2,248.4,110.3,Over-Exploited
+Maharashtra,Pune,Block_3,2022,181.7,87.6,53.2,Safe
+Maharashtra,Pune,Block_3,2023,83.8,39.3,55.6,Safe
+Maharashtra,Pune,Block_4,2019,85.2,48.3,69.5,Safe
+Maharashtra,Pune,Block_4,2020,198.0,128.4,75.9,Semi-Critical
+Maharashtra,Pune,Block_4,2021,78.7,76.4,115.6,Over-Exploited
+Maharashtra,Pune,Block_4,2022,201.4,111.3,62.0,Safe
+Maharashtra,Pune,Block_4,2023,224.2,141.6,76.6,Semi-Critical
+Maharashtra,Pune,Block_5,2019,297.1,236.9,89.0,Semi-Critical
+Maharashtra,Pune,Block_5,2020,211.7,204.6,104.3,Over-Exploited
+Maharashtra,Pune,Block_5,2021,84.1,48.8,72.1,Semi-Critical
+Maharashtra,Pune,Block_5,2022,95.0,91.6,115.9,Over-Exploited
+Maharashtra,Pune,Block_5,2023,265.4,215.5,95.9,Critical
+Maharashtra,Nagpur,Block_1,2019,130.8,100.7,82.1,Semi-Critical
+Maharashtra,Nagpur,Block_1,2020,94.2,70.4,89.3,Semi-Critical
+Maharashtra,Nagpur,Block_1,2021,93.6,93.8,112.9,Over-Exploited
+Maharashtra,Nagpur,Block_1,2022,131.8,131.6,119.9,Over-Exploited
+Maharashtra,Nagpur,Block_1,2023,162.7,70.6,53.3,Safe
+Maharashtra,Nagpur,Block_2,2019,50.7,47.8,105.5,Over-Exploited
+Maharashtra,Nagpur,Block_2,2020,138.2,85.8,76.7,Semi-Critical
+Maharashtra,Nagpur,Block_2,2021,298.9,310.0,118.0,Over-Exploited
+Maharashtra,Nagpur,Block_2,2022,261.0,210.1,100.4,Over-Exploited
+Maharashtra,Nagpur,Block_2,2023,210.9,127.5,68.7,Safe
+Maharashtra,Nagpur,Block_3,2019,199.5,131.0,80.4,Semi-Critical
+Maharashtra,Nagpur,Block_3,2020,147.0,154.3,111.3,Over-Exploited
+Maharashtra,Nagpur,Block_3,2021,93.7,51.3,62.6,Safe
+Maharashtra,Nagpur,Block_3,2022,275.5,181.8,70.9,Semi-Critical
+Maharashtra,Nagpur,Block_3,2023,198.9,107.6,60.7,Safe
+Maharashtra,Nagpur,Block_4,2019,233.5,215.0,104.5,Over-Exploited
+Maharashtra,Nagpur,Block_4,2020,168.5,98.0,72.7,Semi-Critical
+Maharashtra,Nagpur,Block_4,2021,25.5,26.8,111.7,Over-Exploited
+Maharashtra,Nagpur,Block_4,2022,252.9,115.7,54.1,Safe
+Maharashtra,Nagpur,Block_4,2023,265.8,140.2,56.0,Safe
+Maharashtra,Nagpur,Block_5,2019,156.1,130.6,103.2,Over-Exploited
+Maharashtra,Nagpur,Block_5,2020,234.4,159.9,83.3,Semi-Critical
+Maharashtra,Nagpur,Block_5,2021,173.9,162.2,111.1,Over-Exploited
+Maharashtra,Nagpur,Block_5,2022,138.5,101.1,87.8,Semi-Critical
+Maharashtra,Nagpur,Block_5,2023,224.4,133.8,71.8,Semi-Critical
+Karnataka,Bangalore Urban,Block_1,2019,298.6,216.2,80.7,Semi-Critical
+Karnataka,Bangalore Urban,Block_1,2020,164.9,88.7,65.8,Safe
+Karnataka,Bangalore Urban,Block_1,2021,114.7,67.4,66.1,Safe
+Karnataka,Bangalore Urban,Block_1,2022,81.7,62.3,94.1,Critical
+Karnataka,Bangalore Urban,Block_1,2023,84.1,86.7,110.2,Over-Exploited
+Karnataka,Bangalore Urban,Block_2,2019,39.8,32.2,96.7,Critical
+Karnataka,Bangalore Urban,Block_2,2020,80.0,75.8,115.5,Over-Exploited
+Karnataka,Bangalore Urban,Block_2,2021,179.9,164.4,104.9,Over-Exploited
+Karnataka,Bangalore Urban,Block_2,2022,246.1,115.8,56.8,Safe
+Karnataka,Bangalore Urban,Block_2,2023,140.7,100.5,82.7,Semi-Critical
+Karnataka,Bangalore Urban,Block_3,2019,224.1,240.0,118.9,Over-Exploited
+Karnataka,Bangalore Urban,Block_3,2020,47.6,30.2,73.7,Semi-Critical
+Karnataka,Bangalore Urban,Block_3,2021,261.3,138.5,63.3,Safe
+Karnataka,Bangalore Urban,Block_3,2022,145.6,87.4,69.5,Safe
+Karnataka,Bangalore Urban,Block_3,2023,89.9,68.4,81.0,Semi-Critical
+Karnataka,Bangalore Urban,Block_4,2019,261.2,123.4,53.5,Safe
+Karnataka,Bangalore Urban,Block_4,2020,299.8,326.9,117.8,Over-Exploited
+Karnataka,Bangalore Urban,Block_4,2021,279.4,159.7,61.6,Safe
+Karnataka,Bangalore Urban,Block_4,2022,156.0,101.3,78.0,Semi-Critical
+Karnataka,Bangalore Urban,Block_4,2023,36.4,37.1,118.9,Over-Exploited
+Karnataka,Bangalore Urban,Block_5,2019,94.3,70.8,81.8,Semi-Critical
+Karnataka,Bangalore Urban,Block_5,2020,138.4,156.3,119.7,Over-Exploited
+Karnataka,Bangalore Urban,Block_5,2021,175.6,97.0,60.9,Safe
+Karnataka,Bangalore Urban,Block_5,2022,103.1,88.3,90.6,Critical
+Karnataka,Bangalore Urban,Block_5,2023,171.8,84.6,54.0,Safe
+Karnataka,Mysore,Block_1,2019,183.6,176.3,109.7,Over-Exploited
+Karnataka,Mysore,Block_1,2020,64.1,33.6,55.5,Safe
+Karnataka,Mysore,Block_1,2021,72.0,62.2,97.2,Critical
+Karnataka,Mysore,Block_1,2022,85.9,79.0,112.4,Over-Exploited
+Karnataka,Mysore,Block_1,2023,88.9,73.8,93.4,Critical
+Karnataka,Mysore,Block_2,2019,137.4,105.6,86.6,Semi-Critical
+Karnataka,Mysore,Block_2,2020,281.7,234.3,100.1,Over-Exploited
+Karnataka,Mysore,Block_2,2021,86.8,72.4,97.1,Critical
+Karnataka,Mysore,Block_2,2022,104.0,90.4,102.6,Over-Exploited
+Karnataka,Mysore,Block_2,2023,40.3,42.0,120.0,Over-Exploited
+Karnataka,Mysore,Block_3,2019,298.9,157.4,64.9,Safe
+Karnataka,Mysore,Block_3,2020,94.3,98.9,111.6,Over-Exploited
+Karnataka,Mysore,Block_3,2021,266.2,139.0,61.0,Safe
+Karnataka,Mysore,Block_3,2022,253.4,213.0,92.8,Critical
+Karnataka,Mysore,Block_3,2023,296.4,134.6,50.6,Safe
+Karnataka,Mysore,Block_4,2019,248.8,202.7,96.4,Critical
+Karnataka,Mysore,Block_4,2020,282.9,134.7,58.1,Safe
+Karnataka,Mysore,Block_4,2021,50.0,30.5,69.2,Safe
+Karnataka,Mysore,Block_4,2022,189.4,110.4,64.2,Safe
+Karnataka,Mysore,Block_4,2023,197.6,139.7,84.2,Semi-Critical
+Karnataka,Mysore,Block_5,2019,273.5,143.1,56.4,Safe
+Karnataka,Mysore,Block_5,2020,138.6,58.6,50.3,Safe
+Karnataka,Mysore,Block_5,2021,235.9,144.4,68.3,Safe
+Karnataka,Mysore,Block_5,2022,227.5,160.5,79.9,Semi-Critical
+Karnataka,Mysore,Block_5,2023,22.7,20.6,112.0,Over-Exploited
+Tamil Nadu,Chennai,Block_1,2019,273.1,261.1,108.4,Over-Exploited
+Tamil Nadu,Chennai,Block_1,2020,183.1,88.7,58.9,Safe
+Tamil Nadu,Chennai,Block_1,2021,106.3,105.1,105.7,Over-Exploited
+Tamil Nadu,Chennai,Block_1,2022,261.0,157.9,64.7,Safe
+Tamil Nadu,Chennai,Block_1,2023,89.9,76.7,104.6,Over-Exploited
+Tamil Nadu,Chennai,Block_2,2019,267.6,215.3,93.4,Critical
+Tamil Nadu,Chennai,Block_2,2020,63.3,65.8,110.6,Over-Exploited
+Tamil Nadu,Chennai,Block_2,2021,293.3,301.9,111.7,Over-Exploited
+Tamil Nadu,Chennai,Block_2,2022,26.9,17.9,73.1,Semi-Critical
+Tamil Nadu,Chennai,Block_2,2023,280.6,285.3,110.5,Over-Exploited
+Tamil Nadu,Chennai,Block_3,2019,247.0,218.1,105.1,Over-Exploited
+Tamil Nadu,Chennai,Block_3,2020,50.3,51.5,110.0,Over-Exploited
+Tamil Nadu,Chennai,Block_3,2021,82.3,62.4,82.2,Semi-Critical
+Tamil Nadu,Chennai,Block_3,2022,105.5,64.0,66.0,Safe
+Tamil Nadu,Chennai,Block_3,2023,26.6,16.1,72.9,Semi-Critical
+Tamil Nadu,Chennai,Block_4,2019,262.0,172.2,69.5,Safe
+Tamil Nadu,Chennai,Block_4,2020,199.6,203.7,118.7,Over-Exploited
+Tamil Nadu,Chennai,Block_4,2021,170.1,92.9,58.1,Safe
+Tamil Nadu,Chennai,Block_4,2022,291.7,283.1,117.4,Over-Exploited
+Tamil Nadu,Chennai,Block_4,2023,94.3,61.9,80.4,Semi-Critical
+Tamil Nadu,Chennai,Block_5,2019,224.0,175.3,92.4,Critical
+Tamil Nadu,Chennai,Block_5,2020,163.2,126.5,90.4,Critical
+Tamil Nadu,Chennai,Block_5,2021,91.3,41.4,50.1,Safe
+Tamil Nadu,Chennai,Block_5,2022,279.2,246.8,100.4,Over-Exploited
+Tamil Nadu,Chennai,Block_5,2023,227.7,154.8,75.5,Semi-Critical
+Tamil Nadu,Coimbatore,Block_1,2019,39.6,26.0,73.0,Semi-Critical
+Tamil Nadu,Coimbatore,Block_1,2020,107.9,100.4,100.4,Over-Exploited
+Tamil Nadu,Coimbatore,Block_1,2021,104.1,69.2,78.5,Semi-Critical
+Tamil Nadu,Coimbatore,Block_1,2022,132.7,66.0,58.9,Safe
+Tamil Nadu,Coimbatore,Block_1,2023,137.7,126.2,97.4,Critical
+Tamil Nadu,Coimbatore,Block_2,2019,272.8,173.0,71.1,Semi-Critical
+Tamil Nadu,Coimbatore,Block_2,2020,173.4,97.2,70.1,Semi-Critical
+Tamil Nadu,Coimbatore,Block_2,2021,140.4,119.3,95.8,Critical
+Tamil Nadu,Coimbatore,Block_2,2022,150.2,84.5,65.0,Safe
+Tamil Nadu,Coimbatore,Block_2,2023,152.5,150.8,105.8,Over-Exploited
+Tamil Nadu,Coimbatore,Block_3,2019,67.5,47.3,86.2,Semi-Critical
+Tamil Nadu,Coimbatore,Block_3,2020,197.2,179.9,107.3,Over-Exploited
+Tamil Nadu,Coimbatore,Block_3,2021,230.3,136.4,65.7,Safe
+Tamil Nadu,Coimbatore,Block_3,2022,75.8,40.9,67.2,Safe
+Tamil Nadu,Coimbatore,Block_3,2023,153.0,78.2,55.1,Safe
+Tamil Nadu,Coimbatore,Block_4,2019,136.0,77.4,63.7,Safe
+Tamil Nadu,Coimbatore,Block_4,2020,215.0,126.0,67.1,Safe
+Tamil Nadu,Coimbatore,Block_4,2021,203.7,167.3,102.6,Over-Exploited
+Tamil Nadu,Coimbatore,Block_4,2022,235.6,153.3,79.8,Semi-Critical
+Tamil Nadu,Coimbatore,Block_4,2023,69.2,56.3,86.2,Semi-Critical
+Tamil Nadu,Coimbatore,Block_5,2019,34.1,31.3,109.4,Over-Exploited
+Tamil Nadu,Coimbatore,Block_5,2020,147.8,131.6,96.8,Critical
+Tamil Nadu,Coimbatore,Block_5,2021,296.6,307.3,116.5,Over-Exploited
+Tamil Nadu,Coimbatore,Block_5,2022,269.6,241.3,100.3,Over-Exploited
+Tamil Nadu,Coimbatore,Block_5,2023,161.3,131.7,88.3,Semi-Critical
+Uttar Pradesh,Lucknow,Block_1,2019,271.2,205.7,83.2,Semi-Critical
+Uttar Pradesh,Lucknow,Block_1,2020,92.6,73.3,94.6,Critical
+Uttar Pradesh,Lucknow,Block_1,2021,234.4,193.2,93.9,Critical
+Uttar Pradesh,Lucknow,Block_1,2022,96.9,55.0,70.0,Semi-Critical
+Uttar Pradesh,Lucknow,Block_1,2023,96.1,71.6,87.9,Semi-Critical
+Uttar Pradesh,Lucknow,Block_2,2019,58.7,48.3,98.6,Critical
+Uttar Pradesh,Lucknow,Block_2,2020,217.8,138.5,78.6,Semi-Critical
+Uttar Pradesh,Lucknow,Block_2,2021,171.9,95.6,64.5,Safe
+Uttar Pradesh,Lucknow,Block_2,2022,137.6,117.1,90.9,Critical
+Uttar Pradesh,Lucknow,Block_2,2023,214.7,206.6,103.6,Over-Exploited
+Uttar Pradesh,Lucknow,Block_3,2019,126.5,75.6,74.6,Semi-Critical
+Uttar Pradesh,Lucknow,Block_3,2020,231.0,250.3,116.7,Over-Exploited
+Uttar Pradesh,Lucknow,Block_3,2021,137.3,110.5,88.3,Semi-Critical
+Uttar Pradesh,Lucknow,Block_3,2022,188.9,102.9,65.4,Safe
+Uttar Pradesh,Lucknow,Block_3,2023,142.0,84.0,73.6,Semi-Critical
+Uttar Pradesh,Lucknow,Block_4,2019,210.2,111.3,61.5,Safe
+Uttar Pradesh,Lucknow,Block_4,2020,150.9,115.6,93.5,Critical
+Uttar Pradesh,Lucknow,Block_4,2021,27.6,21.2,89.5,Semi-Critical
+Uttar Pradesh,Lucknow,Block_4,2022,27.6,14.7,59.5,Safe
+Uttar Pradesh,Lucknow,Block_4,2023,149.3,92.3,76.5,Semi-Critical
+Uttar Pradesh,Lucknow,Block_5,2019,79.3,69.5,103.3,Over-Exploited
+Uttar Pradesh,Lucknow,Block_5,2020,126.2,124.7,108.2,Over-Exploited
+Uttar Pradesh,Lucknow,Block_5,2021,90.6,37.8,51.4,Safe
+Uttar Pradesh,Lucknow,Block_5,2022,171.0,121.0,74.5,Semi-Critical
+Uttar Pradesh,Lucknow,Block_5,2023,202.0,177.2,95.6,Critical
+Uttar Pradesh,Kanpur,Block_1,2019,231.2,139.4,64.0,Safe
+Uttar Pradesh,Kanpur,Block_1,2020,25.7,12.4,58.8,Safe
+Uttar Pradesh,Kanpur,Block_1,2021,207.4,119.7,65.2,Safe
+Uttar Pradesh,Kanpur,Block_1,2022,215.9,122.0,61.7,Safe
+Uttar Pradesh,Kanpur,Block_1,2023,190.0,100.5,58.0,Safe
+Uttar Pradesh,Kanpur,Block_2,2019,249.4,135.6,57.6,Safe
+Uttar Pradesh,Kanpur,Block_2,2020,27.2,22.4,97.4,Critical
+Uttar Pradesh,Kanpur,Block_2,2021,288.3,247.9,100.0,Critical
+Uttar Pradesh,Kanpur,Block_2,2022,41.3,35.0,93.8,Critical
+Uttar Pradesh,Kanpur,Block_2,2023,48.5,48.6,109.5,Over-Exploited
+Uttar Pradesh,Kanpur,Block_3,2019,188.1,182.9,118.8,Over-Exploited
+Uttar Pradesh,Kanpur,Block_3,2020,239.1,162.9,80.0,Semi-Critical
+Uttar Pradesh,Kanpur,Block_3,2021,123.8,80.1,73.9,Semi-Critical
+Uttar Pradesh,Kanpur,Block_3,2022,257.9,136.6,57.4,Safe
+Uttar Pradesh,Kanpur,Block_3,2023,289.0,279.5,108.0,Over-Exploited
+Uttar Pradesh,Kanpur,Block_4,2019,218.0,191.2,101.4,Over-Exploited
+Uttar Pradesh,Kanpur,Block_4,2020,290.3,260.0,106.6,Over-Exploited
+Uttar Pradesh,Kanpur,Block_4,2021,170.7,119.8,80.5,Semi-Critical
+Uttar Pradesh,Kanpur,Block_4,2022,224.7,207.0,109.6,Over-Exploited
+Uttar Pradesh,Kanpur,Block_4,2023,252.6,229.5,111.7,Over-Exploited
+Uttar Pradesh,Kanpur,Block_5,2019,88.3,71.2,92.7,Critical
+Uttar Pradesh,Kanpur,Block_5,2020,126.1,111.1,109.6,Over-Exploited
+Uttar Pradesh,Kanpur,Block_5,2021,70.9,62.5,105.9,Over-Exploited
+Uttar Pradesh,Kanpur,Block_5,2022,115.3,106.5,99.1,Critical
+Uttar Pradesh,Kanpur,Block_5,2023,97.4,90.9,116.4,Over-Exploited
