@@ -11,7 +11,6 @@ import logger from './logger.js';
 dotenv.config();
 
 const { Pool } = pkg;
-
 const app = express();
 const port = 3001;
 
@@ -21,7 +20,7 @@ app.use(express.json());
 const chatbot = new Chatbot();
 await chatbot.initialize();
 
-// PostgreSQL connection (Supabase / Neon)
+// PostgreSQL connection
 const pool = new Pool({
     user: process.env.DB_USER,
     host: process.env.DB_HOST,
@@ -52,35 +51,56 @@ app.get('/api/test-db', async (req, res) => {
     }
 });
 
-// ✅ Main Chat Endpoint (No changes here except formatting)
+// ✅ Main Chat Endpoint
 app.post('/api/chat', async (req, res) => {
     const { question, history = [] } = req.body;
-    if (!question) 
-    {
-        logger.info(`Request from ${req.ip} | Missing question paramater | Ended in 400 Bad Request.`);
-        logger.info(`---------------------------------------------------------------------------------------------`);
+    if (!question) {
+        logger.info(`Request from ${req.ip} | Missing question parameter | 400`);
         return res.status(400).json({ error: 'Question is required.' });
-    } 
+    }
 
     try {
         const detectedLang = await detectLanguage(question);
         let questionInEnglish = question;
+
         if (detectedLang !== 'EN') {
             questionInEnglish = await translateText(question, 'EN', detectedLang);
         }
 
         let enhancedQuestion = questionInEnglish;
-
         if (detectedLang !== 'EN') {
             enhancedQuestion = `${questionInEnglish} (Please provide the title and labels in ${detectedLang})`;
         }
-        logger.info(`Request from ${req.ip} | Question: ${question} | Detected Language: ${detectedLang} | Translated Question: ${enhancedQuestion}`);
+
+        logger.info(`Incoming | Q: ${question} | Detected: ${detectedLang}`);
+
         const plan = await chatbot.answer(enhancedQuestion, history);
         logger.info(`Generated Plan: ${JSON.stringify(plan)}`);
+
         const result = await pool.query(plan.sql_query);
         let data = result.rows;
 
-        if (detectedLang !== 'EN' && data.length > 0) {
+        let finalChartType = plan.chart_type || 'table';
+        let finalTitle = plan.title_suggestion || '';
+        let finalAnswer = plan.one_line_answer || '';
+
+        // 🟢 Handle single_value results
+        if (finalChartType === 'single_value' && data.length > 0) {
+            const firstRow = data[0];
+            const value = Object.values(firstRow)[0];
+
+            if (finalAnswer.includes('[value]')) {
+                finalAnswer = finalAnswer.replace('[value]', value);
+            }
+            if (finalTitle.includes('[value]')) {
+                finalTitle = finalTitle.replace('[value]', value);
+            }
+
+            data = firstRow; // flatten
+        }
+
+        // 🟢 Translate column names if needed
+        if (detectedLang !== 'EN' && Array.isArray(data) && data.length > 0) {
             const keys = Object.keys(data[0]);
             const translatedKeys = await Promise.all(
                 keys.map(key => translateText(key, detectedLang, 'EN'))
@@ -94,24 +114,23 @@ app.post('/api/chat', async (req, res) => {
                 return newRow;
             });
         }
-        logger.info(`Response to ${req.ip} | Successfully processed request | Ended in 200 OK.`);
-        logger.info(`---------------------------------------------------------------------------------------------`);
+
+        logger.info(`Response to ${req.ip} | 200 OK`);
         res.json({
-            chartType: plan.chart_type,
-            title: plan.title_suggestion,
+            chartType: finalChartType,
+            title: finalTitle,
+            oneLineAnswer: finalAnswer, // 🟢 Include this for frontend
             data,
             userLanguage: detectedLang
         });
 
     } catch (error) {
-        logger.error(`Request from ${req.ip} | Error: ${error.message} | Ended in 500 Internal Server Error.`);
-        logger.info(`---------------------------------------------------------------------------------------------`);
-        let msg = 'Failed to get a response from the AI.';
-        res.status(500).json({ error: msg });
+        logger.error(`Error: ${error.message} | 500`);
+        res.status(500).json({ error: 'Failed to get a response from the AI.' });
     }
 });
 
-// ✅ Background process checks alerts every 15 seconds
+// ✅ Background alert system
 setInterval(async () => {
     try {
         const alerts = await pool.query('SELECT * FROM alerts');
@@ -121,7 +140,6 @@ setInterval(async () => {
             const newValue = JSON.stringify(queryResult.rows);
 
             if (newValue !== alert.last_value) {
-
                 await transporter.sendMail({
                     from: process.env.EMAIL_USER,
                     to: alert.user_email,
@@ -137,12 +155,12 @@ setInterval(async () => {
                 console.log(`📨 Alert sent to ${alert.user_email}`);
             }
         }
-
     } catch (err) {
         console.error("Alert check failed:", err);
     }
-}, 15000); // 15 seconds
+}, 15000);
 
+// ✅ Manual alert creation endpoint
 app.post("/api/create-alert", async (req, res) => {
     const { email, sql, operator, value, message } = req.body;
 
@@ -151,7 +169,7 @@ app.post("/api/create-alert", async (req, res) => {
     }
 
     try {
-        const raw_text = `${sql} ${operator} ${value}`; // optional
+        const raw_text = `${sql} ${operator} ${value}`;
         await pool.query(
             `INSERT INTO alerts 
              (user_email, sql_condition, comparison_value, operator, message, raw_text)
@@ -165,6 +183,7 @@ app.post("/api/create-alert", async (req, res) => {
     }
 });
 
+// ✅ Periodic check for alerts
 async function checkAlerts() {
     const alerts = await pool.query("SELECT * FROM alerts");
 
@@ -192,7 +211,6 @@ async function checkAlerts() {
                 });
 
                 await pool.query("UPDATE alerts SET last_triggered = NOW() WHERE id = $1", [alert.id]);
-
                 console.log("✅ Alert sent to", alert.user_email);
             }
 
@@ -202,7 +220,6 @@ async function checkAlerts() {
     }
 }
 
-// Run every 30 seconds
 setInterval(checkAlerts, 30000);
 
 // ✅ Start Server

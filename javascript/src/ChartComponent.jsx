@@ -4,7 +4,7 @@ import React from 'react';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, LineElement, PointElement, ArcElement, Title, Tooltip, Legend } from 'chart.js';
 import { Bar, Line, Pie } from 'react-chartjs-2';
 
-ChartJS.register( CategoryScale, LinearScale, BarElement, LineElement, PointElement, ArcElement, Title, Tooltip, Legend );
+ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, ArcElement, Title, Tooltip, Legend);
 
 const formatDataForChart = (data, chartType) => {
     if (!data || data.length === 0) {
@@ -30,7 +30,7 @@ const formatDataForChart = (data, chartType) => {
             borderColor: borderColors,
             borderWidth: 1.5,
         });
-    } 
+    }
     else {
         const dataKeys = Object.keys(data[0]).slice(1);
         datasets = dataKeys.map((key, index) => {
@@ -60,11 +60,25 @@ export default function ChartComponent({ chartInfo }) {
         );
     }
 
-    if (chartType === 'error' || chartType === 'single_value') {
-        const message = data[0].error_message || JSON.stringify(data[0]);
+    if (chartType === 'single_value') {
+        const value = Object.values(data)[0] ?? 'N/A';
+        const label = Object.keys(data)[0] ?? 'Value';
+
+        return (
+            <div className="chart-container flex flex-col items-center justify-center py-6">
+                {title && <h3 className="text-lg font-semibold mb-2">{title}</h3>}
+                {chartInfo.oneLineAnswer && (
+                    <p className="text-base text-gray-700 mb-3 text-center">{chartInfo.oneLineAnswer}</p>
+                )}
+            </div>
+        );
+    }
+
+    if (chartType === 'error') {
+        const message = data[0].error_message
         return <div className="chart-container error-message"><h3>{title}</h3><p>{message}</p></div>;
     }
-    
+
     if (chartType === 'table') {
         return (
             <div className="chart-container">
@@ -89,7 +103,7 @@ export default function ChartComponent({ chartInfo }) {
             title: { display: true, text: title },
         },
     };
-    
+
     return (
         <div className="chart-container">
             {chartType === 'bar' && <Bar options={options} data={formattedData} />}

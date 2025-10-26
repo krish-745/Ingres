@@ -1,63 +1,59 @@
-import {VectorDB} from './vectordb.js';
+import { VectorDB } from './vectordb.js';
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import logger from './logger.js';
 import { get_questions } from './utils.js';
 
-class cb
-{
-    constructor()
-    {
-      this.vectordb = new VectorDB();
+class cb {
+    constructor() {
+        this.vectordb = new VectorDB();
     }
 
     async initialize() {
-    const questionsResult = await get_questions();
-    const map = new Map();
-    if (questionsResult && Array.isArray(questionsResult)) {
-        for (const item of questionsResult) {
-            if (item.question && item.query) {
-                map.set(item.question, item.query);
+        const questionsResult = await get_questions();
+        const map = new Map();
+        if (questionsResult && Array.isArray(questionsResult)) {
+            for (const item of questionsResult) {
+                if (item.question && item.query) {
+                    map.set(item.question, item.query);
+                }
             }
+        } else {
+            logger.error("get_questions() did not return a valid array. Cannot build question map.");
         }
-    } else{
-         logger.error("get_questions() did not return a valid array. Cannot build question map.");
+        this.question_map = map;
     }
-    this.question_map = map;
-}
 
-    async answer(question,history=[])
-    {
+    async answer(question, history = []) {
         const full_question = [...history.map(h => h.content), question].join("\n");
-        const json = await this.get_sql(full_question,history);
+        const json = await this.get_sql(full_question, history);
         const obj = this.extract_json(json);
         return obj;
     }
 
-    get_prompt(relatedSchema, relatedQuestions)
-  {
-    const question_with_query = relatedQuestions.map(questionString => {
-        const sqlQuery = this.question_map.get(questionString);
-        if (sqlQuery) {
-            return `Question: ${questionString}\nSQL Query: ${sqlQuery}`;
-        }
-        logger.warn(`Question "${questionString}" found in vector DB but not in question_map.`);
-        return null;
-    }).filter(Boolean);
-    const relatedQuestionsSection = (question_with_query && question_with_query.length > 0)
-  ? `
+    get_prompt(relatedSchema, relatedQuestions) {
+        const question_with_query = relatedQuestions.map(questionString => {
+            const sqlQuery = this.question_map.get(questionString);
+            if (sqlQuery) {
+                return `Question: ${questionString}\nSQL Query: ${sqlQuery}`;
+            }
+            logger.warn(`Question "${questionString}" found in vector DB but not in question_map.`);
+            return null;
+        }).filter(Boolean);
+        const relatedQuestionsSection = (question_with_query && question_with_query.length > 0)
+            ? `
 ===Contextual Examples (Use these to guide your SQL logic)====
 
 ${question_with_query.join('\n\n')}
 `
-  : '';
+            : '';
 
- const schemaSection = `
+        const schemaSection = `
 ===Use the following schema details====
 
 ${relatedSchema.join('\n')}
 `;
 
- return `You are an expert PostgreSQL data analyst. Your task is to act as a query and visualization planner. Based on the user's question, the provided schema, and sample questions, you must generate a JSON object. Your response MUST be a single, valid JSON object and nothing else. Do not add any text or explanations outside of the JSON structure.
+        return `You are an expert PostgreSQL data analyst. Your task is to act as a query and visualization planner. Based on the user's question, the provided schema, and sample questions, you must generate a JSON object. Your response MUST be a single, valid JSON object and nothing else. Do not add any text or explanations outside of the JSON structure.
 
 The JSON object must have the following schema:
 {
@@ -73,7 +69,7 @@ The JSON object must have the following schema:
 Question: How has the groundwater refill changed over the years for Block_1 in Kanpur?
 JSON Response:
 {
- "sql_query": "SELECT Year AS report_year, Recharge_mcm AS groundwater_recharge_mcm FROM groundwater_data WHERE District = 'Kanpur' AND Block = 'Block_1' ORDER BY Year;",
+ "sql_query": "SELECT Year AS report_year, Recharge_mcm AS groundwater_recharge_mcm FROM groundwater_assessment WHERE District = 'Kanpur' AND Block = 'Block_1' ORDER BY Year;",
  "chart_type": "line",
  "title_suggestion": "Groundwater Recharge in Kanpur (Block 1) Over Time",
  "one_line_answer": null,
@@ -83,7 +79,7 @@ JSON Response:
 Question: What was the highest extraction percentage in 2023?
 JSON Response:
 {
- "sql_query": "SELECT MAX(Stage_pct) AS max_extraction_percentage FROM groundwater_data WHERE Year = 2023;",
+ "sql_query": "SELECT MAX(Stage_pct) AS max_extraction_percentage FROM groundwater_assessment WHERE Year = 2023;",
  "chart_type": "single_value",
  "title_suggestion": "Peak Groundwater Extraction Percentage in 2023",
  "one_line_answer": "The highest groundwater extraction percentage recorded in 2023 was [value].",
@@ -93,7 +89,7 @@ JSON Response:
 Question: Compare the average groundwater usage for different blocks in Pune during 2022.
 JSON Response:
 {
- "sql_query": "SELECT Block, AVG(Extraction_mcm) AS average_extraction FROM groundwater_data WHERE District = 'Pune' AND Year = 2022 GROUP BY Block;",
+ "sql_query": "SELECT Block, AVG(Extraction_mcm) AS average_extraction FROM groundwater_assessment WHERE District = 'Pune' AND Year = 2022 GROUP BY Block;",
  "chart_type": "bar",
  "title_suggestion": "Average Groundwater Usage in Pune Blocks (2022)",
  "one_line_answer": null,
@@ -103,7 +99,7 @@ JSON Response:
 Question: What was the distribution of groundwater categories in Maharashtra in 2023?
 JSON Response:
 {
- "sql_query": "SELECT Category, COUNT(*) AS number_of_blocks FROM groundwater_data WHERE State = 'Maharashtra' AND Year = 2023 GROUP BY Category;",
+ "sql_query": "SELECT Category, COUNT(*) AS number_of_blocks FROM groundwater_assessment WHERE State = 'Maharashtra' AND Year = 2023 GROUP BY Category;",
  "chart_type": "pie",
  "title_suggestion": "Distribution of Groundwater Categories in Maharashtra (2023)",
  "one_line_answer": null,
@@ -140,26 +136,25 @@ ${relatedQuestionsSection}${schemaSection}
   \`{ "sql_query": null, "chart_type": "error", "title_suggestion": "Insufficient information to generate a query.", "one_line_answer": null, "explanation": null }\`
 
 
-Generate the complete JSON response for the following question:`; 
-  }
+Generate the complete JSON response for the following question:`;
+    }
 
-    async get_sql(question,history=[])
-    {
+    async get_sql(question, history = []) {
         const related_schema = await this.vectordb.query(question, "schema", this.vectordb.schema_limit);
 
         const related_questions = await this.vectordb.query(question, "questions", this.vectordb.questions_limit);
         const prompt = this.get_prompt(related_schema, related_questions);
         logger.info(`Generated prompt for question: ${prompt}`);
         const history_prompt = history.map(msg => ({
-            role: msg.role === 'bot' ? 'model' : 'user', 
+            role: msg.role === 'bot' ? 'model' : 'user',
             parts: [{ text: msg.content }]
         }));
-        const contents = 
-        [
-            { role: "user", parts: [{ text: prompt }] },
-            { role: "model", parts: [{ text: "Yes, I am ready. I will follow all instructions and generate the JSON response." }] },
-            ...history_prompt
-        ];
+        const contents =
+            [
+                { role: "user", parts: [{ text: prompt }] },
+                { role: "model", parts: [{ text: "Yes, I am ready. I will follow all instructions and generate the JSON response." }] },
+                ...history_prompt
+            ];
         const client = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
         const model = client.getGenerativeModel({
             model: "gemini-2.0-flash",
@@ -174,14 +169,14 @@ Generate the complete JSON response for the following question:`;
         const response = result.response;
         return response.text();
     }
-    
+
     extract_json(text) {
         let processedText = text.trim();
 
         if (processedText.startsWith("```json")) {
             processedText = processedText.slice(7);
         }
-    
+
         if (processedText.endsWith("```")) {
             processedText = processedText.slice(0, -3);
         }
@@ -195,4 +190,4 @@ Generate the complete JSON response for the following question:`;
     }
 }
 
-export {cb};
+export { cb };
