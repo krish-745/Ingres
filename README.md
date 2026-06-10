@@ -57,16 +57,35 @@ INGRES implements a **Text-to-SQL RAG (Retrieval-Augmented Generation) pipeline*
 7. **Translates** column names and labels back into the user's language
 8. **Renders** an interactive Chart.js visualization in a React chat interface
 
-```
-┌──────────────┐    ┌────────────┐    ┌──────────────┐    ┌────────────┐    ┌──────────┐
-│  User Query  │───▶│  DeepL API │───▶│  ChromaDB    │───▶│  Gemini    │───▶│ Postgres │
-│  (any lang)  │    │  Translate │    │  RAG Lookup  │    │  Text→SQL  │    │  Execute │
-└──────────────┘    └────────────┘    └──────────────┘    └────────────┘    └──────────┘
-                                                                                  │
-                    ┌────────────┐    ┌──────────────┐    ┌────────────┐           │
-                    │  React UI  │◀───│  Chart.js    │◀───│  Express   │◀──────────┘
-                    │  Chatbot   │    │  Visualize   │    │  Server    │
-                    └────────────┘    └──────────────┘    └────────────┘
+```mermaid
+flowchart TB
+    subgraph Input ["User Input"]
+        A[User Query - Any Language]
+    end
+
+    subgraph Processing ["NLP Processing"]
+        B[DeepL API - Language Detection & Translation]
+        C[ChromaDB - RAG Similarity Search]
+        D[Gemini 2.0 Flash - Text to SQL Generation]
+    end
+
+    subgraph Execution ["Data Execution"]
+        E[(PostgreSQL / Supabase)]
+        F[Express Server - Response Formatter]
+    end
+
+    subgraph Output ["Visualization"]
+        G[Chart.js - Auto Chart Selection]
+        H[React Chatbot UI]
+    end
+
+    A -->|natural language| B
+    B -->|english query| C
+    C -->|schema + examples| D
+    D -->|SQL query| E
+    E -->|result rows| F
+    F -->|chart config| G
+    G -->|render| H
 ```
 
 ---
