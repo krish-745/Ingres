@@ -1,9 +1,0 @@
-Project_ID,State,District,Structure_Type,Capacity_mcm,Year_Completed,Status
-PROJ_1001,Maharashtra,Pune,Recharge Shaft,2.08,2015,Active
-PROJ_1002,Tamil Nadu,Chennai,Check Dam,1.98,2010,Active
-PROJ_1003,Tamil Nadu,Coimbatore,Check Dam,1.22,2009,Inactive
-PROJ_1004,Uttar Pradesh,Lucknow,Percolation Tank,2.33,2005,Active
-PROJ_1005,Uttar Pradesh,Lucknow,Check Dam,1.46,2016,Active
-PROJ_1006,Uttar Pradesh,Lucknow,Recharge Shaft,2.28,2017,Active
-PROJ_1007,Uttar Pradesh,Lucknow,Recharge Shaft,1.01,2009,Active
-PROJ_1008,Uttar Pradesh,Kanpur,Recharge Shaft,1.46,2014,Active

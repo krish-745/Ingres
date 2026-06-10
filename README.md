@@ -220,42 +220,51 @@ The LLM is prompted to return a strict JSON schema:
 
 ```
 Ingres/
+├── .gitignore                         # Repository-wide ignore rules
 ├── README.md
-├── schema.sql                         # PostgreSQL table definitions + CSV import commands
-├── schema.csv                         # Column metadata with aliases (89 entries)
-├── sample_questions.csv               # 106 curated NL question → SQL query pairs
-├── groundwater_assessment.csv         # 200 block-level assessment records
-├── rainfall_data.csv                  # Annual rainfall data
-├── well_monitoring.csv                # 800+ monthly well depth observations
-├── extraction_sources.csv             # Sector-wise extraction data
-├── policy_zones.csv                   # Regulatory zone classifications
-├── recharge_structures.csv            # Infrastructure project data
-├── chroma/                            # Local ChromaDB persistence (SQLite)
 │
-└── javascript/                        # Application codebase
-    ├── server.js                      # Express API server (chat, alerts, email)
-    ├── base.js                        # Core chatbot class (prompt engineering, Gemini integration)
-    ├── vectordb.js                    # ChromaDB Cloud client (add, query, clear)
-    ├── translationService.js          # DeepL API integration (detect + translate)
-    ├── utils.js                       # PostgreSQL helpers, embedding generation, ID hashing
-    ├── logger.js                      # Winston logger (file + console + error transports)
-    ├── populate-chroma-cloud.js       # One-time script to populate ChromaDB collections
-    ├── main.js                        # CLI test runner for the chatbot engine
+├── data/                              # Seed data and schema definitions
+│   ├── schema.sql                     # PostgreSQL table DDL + CSV import commands
+│   ├── schema.csv                     # Column metadata with aliases (89 entries)
+│   ├── sample_questions.csv           # 106 curated NL question → SQL query pairs
+│   ├── groundwater_assessment.csv     # 200 block-level assessment records
+│   ├── rainfall_data.csv              # Annual rainfall data
+│   ├── well_monitoring.csv            # 800+ monthly well depth observations
+│   ├── extraction_sources.csv         # Sector-wise extraction data
+│   ├── policy_zones.csv               # Regulatory zone classifications
+│   └── recharge_structures.csv        # Infrastructure project data
+│
+└── javascript/                        # Application root (npm project)
+    ├── .env                           # Environment variables (API keys, DB config)
     ├── package.json                   # Dependencies and scripts
+    ├── package-lock.json
     ├── vite.config.js                 # Vite + React plugin config
     ├── eslint.config.js               # ESLint flat config (React Hooks + Refresh)
     ├── index.html                     # Vite HTML entry point
-    ├── .env                           # Environment variables (API keys, DB config)
-    ├── .gitignore
+    │
+    ├── server/                        # Backend modules
+    │   ├── server.js                  # Express API server (chat, alerts, email)
+    │   ├── base.js                    # Core chatbot class (prompt engineering, Gemini)
+    │   ├── vectordb.js                # ChromaDB Cloud client (add, query, clear)
+    │   ├── translationService.js      # DeepL API (detect language + translate)
+    │   ├── utils.js                   # PostgreSQL helpers, embeddings, ID hashing
+    │   └── logger.js                  # Winston logger (file + console + error)
+    │
+    ├── scripts/                       # One-off utility scripts
+    │   ├── populate-chroma-cloud.js   # Seed ChromaDB with schema + questions
+    │   └── main.js                    # CLI test runner for the chatbot engine
     │
     ├── src/                           # React frontend
     │   ├── main.jsx                   # React DOM entry point
     │   ├── App.jsx                    # Root component
-    │   ├── Chatbot.jsx                # Chat UI (messages, input, language indicator)
-    │   ├── ChartComponent.jsx         # Dynamic chart renderer (Bar, Line, Pie, Table, Single Value)
-    │   ├── Chatbot.css                # Chat interface styling (responsive, animations)
     │   ├── App.css                    # App-level styles
-    │   └── index.css                  # Global CSS reset and theming
+    │   ├── index.css                  # Global CSS reset and theming
+    │   ├── assets/                    # Static assets
+    │   │   └── react.svg
+    │   └── components/                # UI components
+    │       ├── Chatbot.jsx            # Chat UI (messages, input, language indicator)
+    │       ├── Chatbot.css            # Chat interface styling (responsive, animations)
+    │       └── ChartComponent.jsx     # Dynamic chart renderer (Bar, Line, Pie, Table)
     │
     └── public/
         └── vite.svg                   # Favicon
@@ -284,10 +293,12 @@ cd Ingres
 Import the schema and seed data into your PostgreSQL instance:
 
 ```bash
+cd data
 psql -h <your-db-host> -U postgres -d postgres -f schema.sql
+cd ..
 ```
 
-> **Note:** The `\copy` commands in `schema.sql` assume the CSV files are in the current directory. Adjust paths if needed, or use Supabase's CSV import UI.
+> **Note:** The `\copy` commands in `schema.sql` reference CSV filenames in the same directory. Run the command from within `data/`, or adjust paths if needed. You can also use Supabase's CSV import UI.
 
 ### 3. Install Dependencies
 
@@ -305,7 +316,7 @@ Create or update the `.env` file in the `javascript/` directory (see [Environmen
 Run the one-time population script to seed ChromaDB with schema metadata and sample questions:
 
 ```bash
-node populate-chroma-cloud.js
+node scripts/populate-chroma-cloud.js
 ```
 
 ### 6. Start the Application
