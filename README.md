@@ -7,13 +7,13 @@
   <img src="https://img.shields.io/badge/Vite_7-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite" />
 </p>
 
-# 💧 INGRES — Intelligent Natural-Language Groundwater Resource Exploration System
+# INGRES — Intelligent Natural-Language Groundwater Resource Exploration System
 
 > **An AI-powered, multilingual chatbot that converts natural language questions into SQL queries, executes them against India's groundwater database, and returns dynamic, interactive visualizations — all in the user's own language.**
 
 ---
 
-## 📌 Table of Contents
+## Table of Contents
 
 - [Problem Statement](#-problem-statement)
 - [Solution Overview](#-solution-overview)
@@ -32,7 +32,7 @@
 
 ---
 
-## 🧩 Problem Statement
+## Problem Statement
 
 India's groundwater data — scattered across assessment reports, well monitoring records, rainfall datasets, and policy zone classifications — is largely inaccessible to non-technical stakeholders such as policymakers, farmers, and civic administrators. Extracting actionable insights requires:
 
@@ -44,7 +44,7 @@ India's groundwater data — scattered across assessment reports, well monitorin
 
 ---
 
-## 💡 Solution Overview
+## Solution Overview
 
 INGRES implements a **Text-to-SQL RAG (Retrieval-Augmented Generation) pipeline** that:
 
@@ -90,22 +90,22 @@ flowchart TB
 
 ---
 
-## ✨ Key Features
+## Key Features
 
 | Feature | Description |
 |---|---|
-| 🗣️ **Multilingual NLP** | Ask questions in English, Hindi, Spanish, French, German, Italian, Portuguese, Russian, Japanese, Chinese, Korean, and Arabic. Responses are automatically localized. |
-| 🤖 **Intelligent Text-to-SQL** | Gemini 2.0 Flash converts natural language to optimized PostgreSQL — with schema-aware aliasing, aggregation handling, and `LIMIT` guards. |
-| 🔍 **RAG-Powered Context** | ChromaDB vector store retrieves the most relevant schema columns and example Q&A pairs using Nomic embeddings, providing few-shot context to the LLM. |
-| 📊 **Auto-Visualization** | The AI selects the best chart type (`bar`, `line`, `pie`, `table`, `single_value`) and generates Chart.js-ready data with human-readable titles. |
-| 💬 **Conversational Memory** | Multi-turn chat history is sent to the model, enabling follow-up questions like *"What about Pune?"* after asking about Maharashtra. |
-| 🔔 **Proactive Alerts** | Users can create custom SQL-based alerts. A background poller evaluates conditions every 30 seconds and sends email notifications via Nodemailer when thresholds are breached. |
-| 📝 **Enterprise Logging** | Winston logger with file rotation (5 MB / 5 files), error-level separation, and optional MongoDB transport for centralized log management. |
-| 📱 **Responsive UI** | Mobile-first React chatbot interface with typing indicators, auto-scroll, language detection badges, and smooth animations. |
+| **Multilingual NLP** | Ask questions in English, Hindi, Spanish, French, German, Italian, Portuguese, Russian, Japanese, Chinese, Korean, and Arabic. Responses are automatically localized. |
+| **Intelligent Text-to-SQL** | Gemini 2.0 Flash converts natural language to optimized PostgreSQL — with schema-aware aliasing, aggregation handling, and `LIMIT` guards. |
+| **RAG-Powered Context** | ChromaDB vector store retrieves the most relevant schema columns and example Q&A pairs using Nomic embeddings, providing few-shot context to the LLM. |
+| **Auto-Visualization** | The AI selects the best chart type (`bar`, `line`, `pie`, `table`, `single_value`) and generates Chart.js-ready data with human-readable titles. |
+| **Conversational Memory** | Multi-turn chat history is sent to the model, enabling follow-up questions like *"What about Pune?"* after asking about Maharashtra. |
+| **Proactive Alerts** | Users can create custom SQL-based alerts. A background poller evaluates conditions every 30 seconds and sends email notifications via Nodemailer when thresholds are breached. |
+| **Enterprise Logging** | Winston logger with file rotation (5 MB / 5 files), error-level separation, and optional MongoDB transport for centralized log management. |
+| **Responsive UI** | Mobile-first React chatbot interface with typing indicators, auto-scroll, language detection badges, and smooth animations. |
 
 ---
 
-## 🏛️ Architecture
+## Architecture
 
 ```mermaid
 flowchart TB
@@ -142,7 +142,7 @@ flowchart TB
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 ### Frontend
 | Technology | Purpose |
@@ -173,7 +173,7 @@ flowchart TB
 
 ---
 
-## 🗃️ Database Schema
+## Database Schema
 
 The system operates on **6 normalized tables** covering India's groundwater ecosystem:
 
@@ -201,7 +201,7 @@ recharge_structures(Project_ID, State, District, Structure_Type, Capacity_mcm, Y
 
 ---
 
-## 🔗 RAG Pipeline (Retrieval-Augmented Generation)
+## RAG Pipeline (Retrieval-Augmented Generation)
 
 The core intelligence of INGRES lies in its RAG pipeline, which provides the LLM with contextually relevant schema and example queries:
 
@@ -235,7 +235,7 @@ The LLM is prompted to return a strict JSON schema:
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```
 Ingres/
@@ -291,7 +291,7 @@ Ingres/
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -352,7 +352,7 @@ npm run dev        # Starts Vite on http://localhost:5173
 
 ---
 
-## 🔐 Environment Variables
+## Environment Variables
 
 Create a `.env` file in the `javascript/` directory:
 
@@ -393,7 +393,7 @@ QUESTIONS=106
 
 ---
 
-## 📡 API Endpoints
+## API Endpoints
 
 ### `POST /api/chat`
 
@@ -444,7 +444,7 @@ Health check endpoint to verify database connectivity.
 
 ---
 
-## 💬 Sample Queries
+## Sample Queries
 
 Here are some example natural language questions INGRES can handle:
 
@@ -461,7 +461,7 @@ Here are some example natural language questions INGRES can handle:
 
 ---
 
-## 🔮 Future Scope
+## Future Scope
 
 - **Voice Input** — Integration with Web Speech API for spoken queries
 - **Geospatial Visualization** — Map-based overlays using Leaflet/Mapbox for district-level heatmaps
@@ -473,7 +473,7 @@ Here are some example natural language questions INGRES can handle:
 
 ---
 
-## 📄 License
+## License
 
 This project was developed as part of the **Smart India Hackathon (SIH)** initiative. All rights reserved.
 
