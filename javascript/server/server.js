@@ -115,8 +115,7 @@ app.post('/api/chat', async (req, res) => {
         });
 
     } catch (error) {
-        logger.error(`Error: ${error.message} | 500`);
-        res.status(500).json({ error: 'Failed to get a response from the AI.' });
+        res.status(500).json({ error: `Backend Error: ${error.message}` });
     }
 });
 
