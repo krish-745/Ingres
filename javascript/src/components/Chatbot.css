@@ -38,7 +38,7 @@ body, html, #root {
   justify-content: center;
   width: 48px;
   height: 48px;
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  background: linear-gradient(135deg, #0ea5e9, #0284c7);
   border-radius: 12px;
   color: white;
 }
@@ -117,7 +117,7 @@ body, html, #root {
 }
 
 .user-bubble {
-  background: #6366f1;
+  background: #0ea5e9;
   color: white;
   border-bottom-right-radius: 4px;
 }
@@ -174,11 +174,11 @@ body, html, #root {
 
 .bot-avatar {
   background: #f1f5f9;
-  color: #6366f1;
+  color: #0ea5e9;
 }
 
 .user-avatar {
-  background: #6366f1;
+  background: #0ea5e9;
   color: white;
 }
 
@@ -209,8 +209,8 @@ body, html, #root {
 }
 
 .chatbot-input input:focus {
-  border-color: #6366f1;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+  border-color: #0ea5e9;
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
 }
 
 .chatbot-input input:disabled {
@@ -222,7 +222,7 @@ body, html, #root {
 .chatbot-input button {
   padding: 14px 24px;
   border-radius: 12px;
-  background: #6366f1;
+  background: #0ea5e9;
   color: white;
   border: none;
   cursor: pointer;
@@ -236,7 +236,7 @@ body, html, #root {
 }
 
 .chatbot-input button:hover:not(:disabled) {
-  background: #4f46e5;
+  background: #0369a1;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   transform: translateY(-1px);
 }
@@ -266,7 +266,7 @@ body, html, #root {
 .dot {
   width: 8px;
   height: 8px;
-  background: #6366f1;
+  background: #0ea5e9;
   border-radius: 50%;
   animation: bounce 1.4s infinite ease-in-out;
 }
