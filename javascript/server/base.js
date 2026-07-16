@@ -157,7 +157,7 @@ Generate the complete JSON response for the following question:`;
             ];
         const client = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
         const model = client.getGenerativeModel({
-            model: "gemini-2.5-flash",
+            model: "gemini-flash-latest",
             generationConfig: {
                 temperature: 0,
             },
