@@ -113,7 +113,7 @@ ${relatedQuestionsSection}${schemaSection}
 2. **\`sql_query\` Generation**:
   a. If the context is sufficient(use the chat history given above also), generate a valid PostgreSQL query.
   b. Use the 'Contextual Examples' to understand user intent and guide the logic of your SQL query.
-  c. Use only the provided schema. Check for and use aliases if available.
+  c. Use only the provided schema. The 'Column Alias' (alts) are just natural language synonyms for your understanding; you MUST ALWAYS use the exact 'Column Name' in your SQL query.
   d. For aggregations (\`SUM\`, \`AVG\`, \`COUNT\`), provide a clear alias in snake_case (e.g., \`AS average_extraction\`).
   e. Add \`LIMIT 100\` to broad queries that don't specify a number of results (e.g., \`SELECT * ...\`), but not to aggregations.
   f. When selecting any column, you MUST provide a meaningful, human-readable alias in snake_case using the \`AS\` keyword (e.g., \`SELECT Stage_pct AS stage_percentage\`). This applies to both regular columns and aggregations.
