@@ -1,4 +1,4 @@
-State,District,Block,Year,Recharge_mcm,Extraction_mcm,Stage_pct,Category
+state,district,block,year,recharge_mcm,extraction_mcm,stage_pct,category
 Maharashtra,Pune,Block_1,2019,199.0,110.7,69.2,Safe
 Maharashtra,Pune,Block_1,2020,82.5,73.1,97.3,Critical
 Maharashtra,Pune,Block_1,2021,269.8,174.5,79.5,Semi-Critical

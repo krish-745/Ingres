@@ -1,4 +1,4 @@
-Project_ID,State,District,Structure_Type,Capacity_mcm,Year_Completed,Status
+project_id,state,district,structure_type,capacity_mcm,year_completed,status
 PROJ_1001,Maharashtra,Pune,Recharge Shaft,2.08,2015,Active
 PROJ_1002,Tamil Nadu,Chennai,Check Dam,1.98,2010,Active
 PROJ_1003,Tamil Nadu,Coimbatore,Check Dam,1.22,2009,Inactive

@@ -1,4 +1,4 @@
-i,District,Year,Extraction_mcm,Sector
+state,district,year,extraction_mcm,sector
 Karnataka,Bangalore Urban,2019,455.68,Agriculture
 Karnataka,Bangalore Urban,2019,134.23,Industry
 Karnataka,Bangalore Urban,2019,92.69,Domestic

@@ -1,4 +1,4 @@
-State,District,Block,Zone_Type,Notification_Year
+state,district,block,zone_type,notification_year
 Maharashtra,Pune,Block_1,Notified,2016
 Maharashtra,Pune,Block_2,Notified,2020
 Maharashtra,Pune,Block_3,Non-Notified,

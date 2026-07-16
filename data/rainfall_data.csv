@@ -1,4 +1,4 @@
-State,District,Year,Annual_Rainfall_mm,Rainfall_Deviation_pct,Rainfall_Category
+state,district,year,annual_rainfall_mm,rainfall_deviation_pct,rainfall_category
 Maharashtra,Pune,2019,899.3,19.9,Normal
 Maharashtra,Pune,2020,772.3,3.0,Normal
 Maharashtra,Pune,2021,929.5,23.9,Excess

@@ -1,4 +1,4 @@
-Well_ID,State,District,Block,Month,Year,Depth_to_Water_m,Observation_Type
+well_id,state,district,block,month,year,depth_to_water_m,observation_type
 Block_1_W1,Maharashtra,Pune,Block_1,May,2019,21.9,Pre-monsoon
 Block_1_W1,Maharashtra,Pune,Block_1,November,2019,15.36,Post-monsoon
 Block_1_W1,Maharashtra,Pune,Block_1,May,2020,22.02,Pre-monsoon
