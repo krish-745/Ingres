@@ -156,16 +156,23 @@ Generate the complete JSON response for the following question:`;
                 ...history_prompt
             ];
         const client = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-        const model = client.getGenerativeModel({
-            model: "gemini-flash-latest",
-            generationConfig: {
-                temperature: 0,
-            },
-        });
-        const chat = model.startChat({
-            history: contents,
-        });
-        const result = await chat.sendMessage(question);
+        let result;
+        try {
+            const model = client.getGenerativeModel({
+                model: "gemini-flash-latest",
+                generationConfig: { temperature: 0 },
+            });
+            const chat = model.startChat({ history: contents });
+            result = await chat.sendMessage(question);
+        } catch (apiError) {
+            logger.error(`Primary Gemini model failed (${apiError.message}). Trying fallback model...`);
+            const fallbackModel = client.getGenerativeModel({
+                model: "gemini-flash-lite-latest",
+                generationConfig: { temperature: 0 },
+            });
+            const fallbackChat = fallbackModel.startChat({ history: contents });
+            result = await fallbackChat.sendMessage(question);
+        }
         const response = result.response;
         return response.text();
     }
