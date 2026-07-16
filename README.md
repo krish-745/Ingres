@@ -459,6 +459,25 @@ Here are some example natural language questions INGRES can handle:
 | **Multilingual** | *"कर्नाटक में 2022 में सूखा किन जिलों में पड़ा?"* (Hindi) |
 | **Infrastructure** | *"List active recharge projects in districts that are currently 'Critical'."* |
 
+### Test Questions to Try
+
+Want to test the AI's reasoning and visualization capabilities on the fly? Try pasting these brand new questions into the chatbot:
+
+1. **The Cross-Table Detective (Tests complex join logic)**
+   > *"Did the districts in Karnataka that were notified as 'Over-Exploited' policy zones also experience a deficit in rainfall during 2022?"*
+
+2. **The Trend Spotter (Generates a Line Chart)**
+   > *"Show me a line chart of the annual rainfall trend in Bangalore Urban from 2019 to 2023."*
+
+3. **The Breakdown (Generates a Pie Chart)**
+   > *"What is the distribution of groundwater extraction by sector (Agriculture vs Industry vs Domestic) for Pune in 2023?"*
+
+4. **The Deep Analyzer (Generates a Bar Chart)**
+   > *"Compare the average depth to water in observation wells across different blocks in Kanpur during the pre-monsoon month of May."*
+
+5. **The Multilingual Test (Tests the DeepL Integration)**
+   > *"¿Cuáles son las zonas seguras en Pune en 2023?"* (Spanish for: What are the safe zones in Pune in 2023?)
+
 ---
 
 ## Future Scope
