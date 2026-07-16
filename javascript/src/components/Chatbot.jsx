@@ -97,13 +97,14 @@ export default function Chatbot() {
         };
         setMessages(prev => [...prev, chartMessage]);
       } else if (data.error) {
-        // Handle error message
+        // Handle error message silently in console for debugging
+        console.error("Detailed Backend Error:", data.error);
         setMessages(prev => [
           ...prev,
           {
             id: Date.now() + 2,
             type: 'bot',
-            content: `⚠️ ${data.error}`,
+            content: `⚠️ Sorry, I encountered a server error. Please try again later.`,
             timestamp: new Date()
           }
         ]);
