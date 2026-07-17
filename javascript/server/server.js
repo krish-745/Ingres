@@ -31,7 +31,7 @@ const pool = new Pool({
 });
 
 
-// ✅ Test DB Endpoint
+//  Test DB Endpoint
 app.get('/api/test-db', async (req, res) => {
     try {
         const result = await pool.query('SELECT NOW()');
@@ -41,7 +41,7 @@ app.get('/api/test-db', async (req, res) => {
     }
 });
 
-// ✅ Main Chat Endpoint
+//  Main Chat Endpoint
 app.post('/api/chat', async (req, res) => {
     const { question, history = [] } = req.body;
     if (!question) {
@@ -74,7 +74,7 @@ app.post('/api/chat', async (req, res) => {
         let finalTitle = plan.title_suggestion || '';
         let finalAnswer = plan.one_line_answer || '';
 
-        // 🟢 Handle single_value results
+        //  Handle single_value results
         if (finalChartType === 'single_value' && data.length > 0) {
             const firstRow = data[0];
             const value = Object.values(firstRow)[0];
@@ -89,7 +89,7 @@ app.post('/api/chat', async (req, res) => {
             data = firstRow; // flatten
         }
 
-        // 🟢 Translate column names if needed
+        //  Translate column names if needed
         if (detectedLang !== 'EN' && Array.isArray(data) && data.length > 0) {
             const keys = Object.keys(data[0]);
             const translatedKeys = await Promise.all(
@@ -109,7 +109,7 @@ app.post('/api/chat', async (req, res) => {
         res.json({
             chartType: finalChartType,
             title: finalTitle,
-            oneLineAnswer: finalAnswer, // 🟢 Include this for frontend
+            oneLineAnswer: finalAnswer, //  Include this for frontend
             data,
             userLanguage: detectedLang
         });
@@ -120,7 +120,7 @@ app.post('/api/chat', async (req, res) => {
 });
 
 
-// ✅ Start Server
+//  Start Server
 app.listen(port, '0.0.0.0', () => {
-    logger.info(`✅ Server running at http://localhost:${port}`);
+    logger.info(` Server running at http://localhost:${port}`);
 });

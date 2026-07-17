@@ -12,17 +12,17 @@ async function populateChromaCloud() {
         console.log('\n1. Clearing existing collections...');
         await vectordb.clear_collection('schema');
         await vectordb.clear_collection('questions');
-        console.log('✓ Collections cleared');
+        console.log(' Collections cleared');
         
         // Step 2: Populate schema collection
         console.log('\n2. Populating schema collection...');
         await vectordb.read_schema();
-        console.log('✓ Schema collection populated');
+        console.log(' Schema collection populated');
         
         // Step 3: Populate questions collection
         console.log('\n3. Populating questions collection...');
         await vectordb.read_questions();
-        console.log('✓ Questions collection populated');
+        console.log(' Questions collection populated');
         
         // Step 4: Test the collections
         console.log('\n4. Testing collections...');
@@ -35,10 +35,10 @@ async function populateChromaCloud() {
         console.log('\nQuestions collection test results:');
         console.log(questionsTest);
         
-        console.log('\n✅ Chroma Cloud population complete!');
+        console.log('\n Chroma Cloud population complete!');
         
     } catch (error) {
-        console.error('\n❌ Error populating Chroma Cloud:', error.message);
+        console.error('\n Error populating Chroma Cloud:', error.message);
         console.error('Full error:', error);
         process.exit(1);
     }
