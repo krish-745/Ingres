@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, Bot, User, Globe } from 'lucide-react';
+import { Turnstile } from '@marsidev/react-turnstile';
 import ChartComponent from './ChartComponent';
 import './Chatbot.css';
 
@@ -15,6 +16,8 @@ export default function Chatbot() {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [detectedLanguage, setDetectedLanguage] = useState('EN');
+  const [turnstileToken, setTurnstileToken] = useState('');
+  const turnstileRef = useRef();
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -74,10 +77,13 @@ export default function Chatbot() {
       const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
       const apiResponse = await fetch(`${apiUrl}/api/chat`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json'
+        },
         body: JSON.stringify({
           question: currentInput,
-          history: chatHistory
+          history: chatHistory,
+          captcha_token: turnstileToken
         }),
       });
       const data = await apiResponse.json();
@@ -123,6 +129,9 @@ export default function Chatbot() {
       ]);
     } finally {
       setIsLoading(false);
+      if (turnstileRef.current) {
+        turnstileRef.current.reset();
+      }
     }
   };
 
@@ -198,6 +207,13 @@ export default function Chatbot() {
       </div>
 
       <div className="chatbot-input">
+        <div style={{ display: 'none' }}>
+            <Turnstile
+                ref={turnstileRef}
+                siteKey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
+                onSuccess={(token) => setTurnstileToken(token)}
+            />
+        </div>
         <input
           type="text"
           value={input}

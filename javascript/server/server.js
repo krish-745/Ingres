@@ -3,6 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import pkg from 'pg';
+import rateLimit from 'express-rate-limit';
 
 import { cb as Chatbot } from './base.js';
 import { translateText } from './translationService.js';
@@ -16,6 +17,12 @@ const port = process.env.PORT || 3001;
 
 app.use(cors());
 app.use(express.json());
+
+const apiLimiter = rateLimit({
+    windowMs: 5 * 60 * 1000, // 5 minutes
+    max: 10, // Limit each IP to 10 requests per windowMs
+    message: { error: 'Too many requests, please try again after 5 minutes' },
+});
 
 const chatbot = new Chatbot();
 await chatbot.initialize();
@@ -42,8 +49,36 @@ app.get('/api/test-db', async (req, res) => {
 });
 
 //  Main Chat Endpoint
-app.post('/api/chat', async (req, res) => {
-    const { question, history = [] } = req.body;
+app.post('/api/chat', apiLimiter, async (req, res) => {
+    const { question, history = [], captcha_token } = req.body;
+    
+    if (!captcha_token) {
+        logger.warn(`Unauthorized access attempt from ${req.ip}: Missing Captcha Token`);
+        return res.status(401).json({ error: 'Unauthorized: Missing Captcha Token' });
+    }
+
+    // Verify token with Cloudflare
+    const formData = new URLSearchParams();
+    formData.append('secret', process.env.TURNSTILE_SECRET_KEY);
+    formData.append('response', captcha_token);
+    formData.append('remoteip', req.ip);
+
+    try {
+        const verificationResponse = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+            method: 'POST',
+            body: formData
+        });
+        const verificationData = await verificationResponse.json();
+
+        if (!verificationData.success) {
+            logger.warn(`Captcha verification failed for ${req.ip}: ${JSON.stringify(verificationData['error-codes'])}`);
+            return res.status(401).json({ error: 'Unauthorized: Invalid Captcha' });
+        }
+    } catch (err) {
+        logger.error(`Error communicating with Cloudflare API: ${err.message}`);
+        return res.status(500).json({ error: 'Internal server error during verification' });
+    }
+
     if (!question) {
         logger.info(`Request from ${req.ip} | Missing question parameter | 400`);
         return res.status(400).json({ error: 'Question is required.' });
@@ -63,6 +98,20 @@ app.post('/api/chat', async (req, res) => {
 
         const plan = await chatbot.answer(enhancedQuestion, history);
         logger.info(`Generated Plan: ${JSON.stringify(plan)}`);
+
+        if (plan.sql_query) {
+            const queryUpper = plan.sql_query.trim().toUpperCase();
+            if (!queryUpper.startsWith('SELECT')) {
+                logger.warn(`Security Warning: Blocked query not starting with SELECT from ${req.ip}. Query: ${plan.sql_query}`);
+                return res.status(403).json({ error: 'Security Exception: Only SELECT queries are permitted.' });
+            }
+            const restrictedKeywords = ['DROP', 'DELETE', 'UPDATE', 'INSERT', 'ALTER', 'TRUNCATE', 'GRANT', 'REVOKE'];
+            const restrictedPattern = new RegExp(`\\b(${restrictedKeywords.join('|')})\\b`, 'i');
+            if (restrictedPattern.test(plan.sql_query)) {
+                logger.warn(`Security Warning: Blocked query containing restricted keyword from ${req.ip}. Query: ${plan.sql_query}`);
+                return res.status(403).json({ error: 'Security Exception: Query contains restricted keyword.' });
+            }
+        }
 
         const result = await pool.query(plan.sql_query);
         let data = result.rows;
