@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://img.shields.io/badge/Gemini_2.0_Flash-4285F4?style=for-the-badge&logo=google&logoColor=white" alt="Gemini" />
+  <img src="https://img.shields.io/badge/Gemini_Flash-4285F4?style=for-the-badge&logo=google&logoColor=white" alt="Gemini" />
   <img src="https://img.shields.io/badge/React_19-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React" />
   <img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL" />
   <img src="https://img.shields.io/badge/ChromaDB-FF6F61?style=for-the-badge&logo=data:image/svg+xml;base64,&logoColor=white" alt="ChromaDB" />
@@ -15,20 +15,20 @@
 
 ## Table of Contents
 
-- [Problem Statement](#-problem-statement)
-- [Solution Overview](#-solution-overview)
-- [Key Features](#-key-features)
-- [Architecture](#-architecture)
-- [Tech Stack](#-tech-stack)
-- [Database Schema](#-database-schema)
-- [RAG Pipeline](#-rag-pipeline-retrieval-augmented-generation)
-- [Project Structure](#-project-structure)
-- [Getting Started](#-getting-started)
-- [Environment Variables](#-environment-variables)
-- [API Endpoints](#-api-endpoints)
-- [Sample Queries](#-sample-queries)
-- [Future Scope](#-future-scope)
-- [License](#-license)
+- [Problem Statement](#problem-statement)
+- [Solution Overview](#solution-overview)
+- [Key Features](#key-features)
+- [Architecture](#architecture)
+- [Tech Stack](#tech-stack)
+- [Database Schema](#database-schema)
+- [RAG Pipeline](#rag-pipeline-retrieval-augmented-generation)
+- [Project Structure](#project-structure)
+- [Getting Started](#getting-started)
+- [Environment Variables](#environment-variables)
+- [API Endpoints](#api-endpoints)
+- [Sample Queries](#sample-queries)
+- [Future Scope](#future-scope)
+- [License](#license)
 
 ---
 
@@ -51,7 +51,7 @@ INGRES implements a **Text-to-SQL RAG (Retrieval-Augmented Generation) pipeline*
 1. **Accepts** a natural language question in any of 11+ languages
 2. **Detects** the input language and translates it to English (via DeepL API)
 3. **Retrieves** relevant schema metadata and example question–query pairs from a ChromaDB vector store
-4. **Generates** a precise PostgreSQL query using Google Gemini 2.0 Flash with zero-temperature, structured JSON output
+4. **Generates** a precise PostgreSQL query using Google Gemini Flash with zero-temperature, structured JSON output
 5. **Executes** the SQL against a Supabase-hosted PostgreSQL database
 6. **Selects** the optimal chart type (bar, line, pie, table, single value)
 7. **Translates** column names and labels back into the user's language
@@ -66,7 +66,7 @@ flowchart TB
     subgraph Processing ["NLP Processing"]
         B[DeepL API - Language Detection & Translation]
         C[ChromaDB - RAG Similarity Search]
-        D[Gemini 2.0 Flash - Text to SQL Generation]
+        D[Gemini Flash - Text to SQL Generation]
     end
 
     subgraph Execution ["Data Execution"]
@@ -95,7 +95,8 @@ flowchart TB
 | Feature | Description |
 |---|---|
 | **Multilingual NLP** | Ask questions in English, Hindi, Spanish, French, German, Italian, Portuguese, Russian, Japanese, Chinese, Korean, and Arabic. Responses are automatically localized. |
-| **Intelligent Text-to-SQL** | Gemini 2.0 Flash converts natural language to optimized PostgreSQL — with schema-aware aliasing, aggregation handling, and `LIMIT` guards. |
+| **Intelligent Text-to-SQL** | Gemini Flash converts natural language to optimized PostgreSQL — with schema-aware aliasing, aggregation handling, and `LIMIT` guards. |
+| **Enterprise Security** | Uses Cloudflare Turnstile Captcha and express-rate-limit to protect backend APIs from bots, and regex-based SQL sanitization to prevent injection. |
 | **RAG-Powered Context** | ChromaDB vector store retrieves the most relevant schema columns and example Q&A pairs using Nomic embeddings, providing few-shot context to the LLM. |
 | **Auto-Visualization** | The AI selects the best chart type (`bar`, `line`, `pie`, `table`, `single_value`) and generates Chart.js-ready data with human-readable titles. |
 | **Conversational Memory** | Multi-turn chat history is sent to the model, enabling follow-up questions like *"What about Pune?"* after asking about Maharashtra. |
@@ -156,7 +157,9 @@ flowchart TB
 | Technology | Purpose |
 |---|---|
 | **Express 5** | REST API server |
-| **Google Generative AI SDK** | Gemini 2.0 Flash for text-to-SQL generation |
+| **Google Generative AI SDK** | Gemini Flash for text-to-SQL generation |
+| **Cloudflare Turnstile** | Invisible Captcha for anti-bot API protection |
+| **express-rate-limit** | API endpoint throttling |
 | **ChromaDB (Cloud)** | Vector database for RAG similarity search |
 | **Nomic Atlas API** | 768-dimensional text embeddings |
 | **DeepL API** | Multilingual translation and language detection |
@@ -377,6 +380,10 @@ NOMIC_API_KEY=your_nomic_api_key
 
 # Google Gemini (LLM)
 GEMINI_API_KEY=your_gemini_api_key
+
+# Cloudflare Turnstile (Security)
+VITE_TURNSTILE_SITE_KEY=your_site_key
+TURNSTILE_SECRET_KEY=your_secret_key
 
 # SMTP Email (Alert Notifications)
 EMAIL_HOST=smtp.gmail.com
