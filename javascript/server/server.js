@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 import pkg from 'pg';
 
 import { cb as Chatbot } from './base.js';
-import { detectLanguage, translateText } from './translationService.js';
+import { translateText } from './translationService.js';
 import logger from './logger.js';
 
 dotenv.config();
@@ -50,12 +50,9 @@ app.post('/api/chat', async (req, res) => {
     }
 
     try {
-        const detectedLang = await detectLanguage(question);
-        let questionInEnglish = question;
-
-        if (detectedLang !== 'EN') {
-            questionInEnglish = await translateText(question, 'EN', detectedLang);
-        }
+        const translationResult = await translateText(question, 'EN');
+        const detectedLang = translationResult.sourceLanguage;
+        const questionInEnglish = translationResult.translatedText;
 
         let enhancedQuestion = questionInEnglish;
         if (detectedLang !== 'EN') {
@@ -93,7 +90,10 @@ app.post('/api/chat', async (req, res) => {
         if (detectedLang !== 'EN' && Array.isArray(data) && data.length > 0) {
             const keys = Object.keys(data[0]);
             const translatedKeys = await Promise.all(
-                keys.map(key => translateText(key, detectedLang, 'EN'))
+                keys.map(async key => {
+                    const res = await translateText(key, detectedLang, 'EN');
+                    return res.translatedText;
+                })
             );
 
             data = data.map(row => {
