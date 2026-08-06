@@ -2,7 +2,7 @@ import { CloudClient } from "chromadb";
 import { get_questions, generateId, generateEmbeddings, get_scehama } from './utils.js';
 
 const myNomicEmbeddingFunction = {
-    generate: async function (texts) {
+    async generate(texts) {
         return await generateEmbeddings(texts);
     }
 };
@@ -13,9 +13,9 @@ class VectorDB
     {
         // Use CloudClient instead of ChromaClient
         this.db = new CloudClient({
-            apiKey: process.env.CHROMA_API_KEY || 'ck-6AdCzCuqWqgxwjdibhzTVsDApmW75HSkrutbBsWZUauf',
-            tenant: process.env.CHROMA_TENANT || 'c12751e7-ffec-4c6e-943a-c4a9c9977d8a',
-            database: process.env.CHROMA_DATABASE || 'ingres'
+            apiKey: process.env.CHROMA_API_KEY,
+            tenant: process.env.CHROMA_TENANT,
+            database: process.env.CHROMA_DATABASE
         });
         // Assuming each query uses around x tables, the expected number of schema rows needed would just be average schema * x
         // Model question as knn and k should be sqrt(total questions)
