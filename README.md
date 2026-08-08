@@ -103,7 +103,6 @@ flowchart TB
 | **RAG-Powered Context** | ChromaDB vector store retrieves the most relevant schema columns and example Q&A pairs using Nomic embeddings, providing few-shot context to the LLM. |
 | **Auto-Visualization** | The AI selects the best chart type (`bar`, `line`, `pie`, `table`, `single_value`) and generates Chart.js-ready data with human-readable titles. |
 | **Conversational Memory** | Multi-turn chat history is sent to the model, enabling follow-up questions like *"What about Pune?"* after asking about Maharashtra. |
-| **Proactive Alerts** | Users can create custom SQL-based alerts. A background poller evaluates conditions every 30 seconds and sends email notifications via Nodemailer when thresholds are breached. |
 | **Enterprise Logging** | Winston logger with file rotation (5 MB / 5 files), error-level separation, and optional MongoDB transport for centralized log management. |
 | **Responsive UI** | Mobile-first React chatbot interface with typing indicators, auto-scroll, language detection badges, and smooth animations. |
 
@@ -125,9 +124,6 @@ flowchart TB
         G --> H[Gemini 2.0 Flash]
         H --> I[SQL Executor]
         I --> J[Response Formatter]
-        
-        K["/api/create-alert"] --> L[Alert Poller]
-        L --> M[Nodemailer]
     end
 
     subgraph Data ["Data Layer"]
@@ -141,7 +137,6 @@ flowchart TB
     I --> N
     G --> O
     O --> P
-    L --> N
 ```
 
 ---
@@ -167,7 +162,6 @@ flowchart TB
 | **Nomic Atlas API** | 768-dimensional text embeddings |
 | **DeepL API** | Multilingual translation and language detection |
 | **pg (node-postgres)** | PostgreSQL client for Supabase |
-| **Nodemailer** | SMTP email notifications for alerts |
 | **Winston** | Structured, multi-transport logging |
 | **node-cron** | (Available) Scheduled task execution |
 
@@ -268,7 +262,7 @@ Ingres/
     ├── index.html                     # Vite HTML entry point
     │
     ├── server/                        # Backend modules
-    │   ├── server.js                  # Express API server (chat, alerts, email)
+    │   ├── server.js                  # Express API server (chat)
     │   ├── base.js                    # Core chatbot class (prompt engineering, Gemini)
     │   ├── vectordb.js                # ChromaDB Cloud client (add, query, clear)
     │   ├── translationService.js      # DeepL API (detect language + translate)
@@ -388,12 +382,6 @@ GEMINI_API_KEY=your_gemini_api_key
 VITE_TURNSTILE_SITE_KEY=your_site_key
 TURNSTILE_SECRET_KEY=your_secret_key
 
-# SMTP Email (Alert Notifications)
-EMAIL_HOST=smtp.gmail.com
-EMAIL_PORT=587
-EMAIL_USER=your_email@gmail.com
-EMAIL_PASS=your_app_password
-
 # Dataset Statistics (for RAG retrieval limit computation)
 TABLES=6
 TOTAL_ALTS=89
@@ -430,21 +418,6 @@ Main conversational endpoint — accepts a natural language question and returns
     { "district": "Bangalore Urban", "annual_rainfall_mm": 542.3 }
   ],
   "userLanguage": "EN"
-}
-```
-
-### `POST /api/create-alert`
-
-Create a custom SQL-based alert with email notifications.
-
-**Request:**
-```json
-{
-  "email": "admin@example.com",
-  "sql": "SELECT AVG(Stage_pct) FROM groundwater_assessment WHERE State = 'Maharashtra' AND Year = 2023",
-  "operator": ">",
-  "value": 90,
-  "message": "Maharashtra's average extraction stage has exceeded 90%!"
 }
 ```
 
