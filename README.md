@@ -465,6 +465,7 @@ Want to test the AI's reasoning and visualization capabilities on the fly? Try p
 
 ## Future Scope
 
+- **Proactive Alerts** — Allow users to create custom SQL-based alerts that evaluate conditions periodically and send email notifications when thresholds are breached
 - **Voice Input** — Integration with Web Speech API for spoken queries
 - **Geospatial Visualization** — Map-based overlays using Leaflet/Mapbox for district-level heatmaps
 - **User Authentication** — Role-based access control for restricted datasets (well monitoring, extraction sources)
