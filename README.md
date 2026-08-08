@@ -50,12 +50,13 @@ INGRES implements a **Text-to-SQL RAG (Retrieval-Augmented Generation) pipeline*
 
 1. **Accepts** a natural language question in any of 11+ languages
 2. **Detects** the input language and translates it to English (via DeepL API)
-3. **Retrieves** relevant schema metadata and example question–query pairs from a ChromaDB vector store
-4. **Generates** a precise PostgreSQL query using Google Gemini Flash with zero-temperature, structured JSON output
-5. **Executes** the SQL against a Supabase-hosted PostgreSQL database
-6. **Selects** the optimal chart type (bar, line, pie, table, single value)
-7. **Translates** column names and labels back into the user's language
-8. **Renders** an interactive Chart.js visualization in a React chat interface
+3. **Embeds** the English question into a vector representation using the Nomic Atlas API
+4. **Retrieves** relevant schema metadata and example question–query pairs from a ChromaDB vector store
+5. **Generates** a precise PostgreSQL query using Google Gemini Flash with zero-temperature, structured JSON output
+6. **Executes** the SQL against a Supabase-hosted PostgreSQL database
+7. **Selects** the optimal chart type (bar, line, pie, table, single value)
+8. **Translates** column names and labels back into the user's language
+9. **Renders** an interactive Chart.js visualization in a React chat interface
 
 ```mermaid
 flowchart TB
@@ -65,7 +66,8 @@ flowchart TB
 
     subgraph Processing ["NLP Processing"]
         B[DeepL API - Language Detection & Translation]
-        C[ChromaDB - RAG Similarity Search]
+        C[Nomic Atlas API - Text Embedding]
+        C2[ChromaDB - RAG Similarity Search]
         D[Gemini Flash - Text to SQL Generation]
     end
 
@@ -81,7 +83,8 @@ flowchart TB
 
     A -->|natural language| B
     B -->|english query| C
-    C -->|schema + examples| D
+    C -->|vector embedding| C2
+    C2 -->|schema + examples| D
     D -->|SQL query| E
     E -->|result rows| F
     F -->|chart config| G
